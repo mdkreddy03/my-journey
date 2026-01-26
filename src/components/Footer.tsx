@@ -1,37 +1,39 @@
 /**
- * FOOTER COMPONENT
- * ================
- * Simple footer with copyright and back-to-top link.
+ * FOOTER - Simple and Clean
+ * ==========================
  */
 
 import { motion } from "framer-motion";
-import { ArrowUp } from "lucide-react";
+import { Database, Heart } from "lucide-react";
 
 const Footer = () => {
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
   return (
-    <footer className="py-8 border-t border-border">
-      <div className="container mx-auto px-6">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+    <footer className="py-8 px-6 border-t border-border bg-card/50">
+      <div className="container mx-auto">
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="flex flex-col md:flex-row items-center justify-between gap-4"
+        >
+          {/* Logo */}
+          <div className="flex items-center gap-2">
+            <Database className="w-5 h-5 text-primary" />
+            <span className="font-heading text-lg font-semibold text-foreground">
+              Your Name
+            </span>
+          </div>
+
           {/* Copyright */}
-          <p className="font-body text-sm text-muted-foreground">
-            © {new Date().getFullYear()} Your Name. All rights reserved.
+          <p className="font-body text-sm text-muted-foreground flex items-center gap-1">
+            Built with <Heart className="w-4 h-4 text-primary" /> and lots of data
           </p>
 
-          {/* Back to top button */}
-          <motion.button
-            onClick={scrollToTop}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="flex items-center gap-2 font-body text-sm text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Back to top
-            <ArrowUp className="w-4 h-4" />
-          </motion.button>
-        </div>
+          {/* Year */}
+          <p className="font-body text-sm text-muted-foreground">
+            © {new Date().getFullYear()} All rights reserved
+          </p>
+        </motion.div>
       </div>
     </footer>
   );
