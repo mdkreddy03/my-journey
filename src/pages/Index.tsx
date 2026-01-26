@@ -1,13 +1,37 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+/**
+ * INDEX PAGE - Main Portfolio Page
+ * =================================
+ * This is the entry point that combines all sections.
+ * 
+ * Key concept:
+ * - Component composition: Building a page from smaller components
+ * - Each component is responsible for its own section
+ * - Easy to reorder, add, or remove sections
+ */
+
+import Navigation from "@/components/Navigation";
+import HeroSection from "@/components/HeroSection";
+import AboutSection from "@/components/AboutSection";
+import ExperienceSection from "@/components/ExperienceSection";
+import HobbiesSection from "@/components/HobbiesSection";
+import ContactSection from "@/components/ContactSection";
+import Footer from "@/components/Footer";
 
 const Index = () => {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
-    </div>
+    // Main wrapper - smooth scrolling enabled
+    <main className="min-h-screen bg-background">
+      {/* Navigation - sticky at top */}
+      <Navigation />
+      
+      {/* Page sections in order */}
+      <HeroSection />
+      <AboutSection />
+      <ExperienceSection />
+      <HobbiesSection />
+      <ContactSection />
+      <Footer />
+    </main>
   );
 };
 
