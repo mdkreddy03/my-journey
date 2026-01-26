@@ -1,29 +1,21 @@
 /**
- * HERO SECTION
- * ============
- * The first thing visitors see - makes the first impression!
- * 
- * Key concepts:
- * - Framer Motion variants: Define animation states
- * - Staggered children: Each element animates one after another
- * - Responsive design: Different layouts for mobile/desktop
+ * HERO SECTION - Data Engineer Focus
+ * ===================================
+ * Modern, tech-inspired hero with animated elements.
  */
 
 import { motion } from "framer-motion";
-import { ArrowDown } from "lucide-react";
+import { ArrowDown, Database, BarChart3, Workflow, Sparkles } from "lucide-react";
 
 const HeroSection = () => {
-  // Container animation - controls when children animate
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      // Stagger each child element by 0.2 seconds
-      transition: { staggerChildren: 0.2, delayChildren: 0.3 },
+      transition: { staggerChildren: 0.15, delayChildren: 0.2 },
     },
   };
 
-  // Individual item animations
   const itemVariants = {
     hidden: { opacity: 0, y: 30 },
     visible: {
@@ -33,37 +25,72 @@ const HeroSection = () => {
     },
   };
 
+  // Floating icons for tech vibe
+  const floatingIcons = [
+    { Icon: Database, delay: 0, x: "10%", y: "20%" },
+    { Icon: BarChart3, delay: 0.5, x: "85%", y: "15%" },
+    { Icon: Workflow, delay: 1, x: "75%", y: "70%" },
+    { Icon: Sparkles, delay: 1.5, x: "15%", y: "75%" },
+  ];
+
   return (
     <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
-      {/* Background gradient using CSS variable */}
+      {/* Background with gradient and grid */}
       <div
         className="absolute inset-0 -z-10"
-        style={{ background: "var(--gradient-warm)" }}
+        style={{ background: "var(--gradient-hero)" }}
       />
+      <div className="absolute inset-0 -z-10 tech-grid opacity-30" />
 
-      {/* Decorative circle - adds visual interest */}
+      {/* Glowing orbs */}
       <motion.div
         initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: 1, opacity: 0.1 }}
-        transition={{ duration: 1.2, ease: "easeOut" }}
-        className="absolute top-1/4 right-1/4 w-96 h-96 bg-primary rounded-full blur-3xl"
+        animate={{ scale: 1, opacity: 0.4 }}
+        transition={{ duration: 1.5, ease: "easeOut" }}
+        className="absolute top-1/4 right-1/4 w-96 h-96 bg-primary/30 rounded-full blur-[120px]"
       />
+      <motion.div
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{ scale: 1, opacity: 0.3 }}
+        transition={{ duration: 1.5, ease: "easeOut", delay: 0.3 }}
+        className="absolute bottom-1/4 left-1/4 w-80 h-80 bg-accent/30 rounded-full blur-[100px]"
+      />
+
+      {/* Floating tech icons */}
+      {floatingIcons.map(({ Icon, delay, x, y }, index) => (
+        <motion.div
+          key={index}
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ opacity: 0.3, scale: 1 }}
+          transition={{ delay: delay + 0.5, duration: 0.5 }}
+          className="absolute hidden md:block"
+          style={{ left: x, top: y }}
+        >
+          <motion.div
+            animate={{ y: [0, -15, 0] }}
+            transition={{ repeat: Infinity, duration: 3, delay: delay }}
+          >
+            <Icon className="w-8 h-8 text-primary/50" />
+          </motion.div>
+        </motion.div>
+      ))}
 
       <motion.div
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="container mx-auto px-6 text-center"
+        className="container mx-auto px-6 text-center relative z-10"
       >
-        {/* Greeting text */}
-        <motion.p
+        {/* Badge */}
+        <motion.div
           variants={itemVariants}
-          className="font-body text-sm uppercase tracking-[0.3em] text-muted-foreground mb-4"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/20 rounded-full mb-8"
         >
-          Welcome to my world
-        </motion.p>
+          <Database className="w-4 h-4 text-primary" />
+          <span className="font-body text-sm text-primary">Data Engineer & Analyst</span>
+        </motion.div>
 
-        {/* Main heading - your name goes here */}
+        {/* Main heading */}
         <motion.h1
           variants={itemVariants}
           className="font-heading text-5xl md:text-7xl lg:text-8xl font-bold text-foreground mb-6 leading-tight"
@@ -71,15 +98,21 @@ const HeroSection = () => {
           Your Name
         </motion.h1>
 
-        {/* Tagline/description */}
+        {/* Tagline with gradient */}
         <motion.p
           variants={itemVariants}
-          className="font-body text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8"
+          className="font-body text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-4"
         >
-          A passionate{" "}
-          <span className="text-primary font-medium">software developer</span>{" "}
-          crafting digital experiences by day, and an adventurous soul exploring
-          the world's wonders by night.
+          Transforming raw data into{" "}
+          <span className="gradient-text font-semibold">actionable insights</span>
+        </motion.p>
+        
+        <motion.p
+          variants={itemVariants}
+          className="font-body text-base text-muted-foreground/70 max-w-xl mx-auto mb-10"
+        >
+          Building data pipelines by day, exploring life's adventures by night.
+          This is my journey through code, data, and beyond.
         </motion.p>
 
         {/* CTA Buttons */}
@@ -88,16 +121,17 @@ const HeroSection = () => {
           className="flex flex-col sm:flex-row gap-4 justify-center items-center"
         >
           <a
-            href="#experience"
-            className="px-8 py-4 bg-primary text-primary-foreground font-body font-medium rounded-full hover:shadow-elevated transition-all duration-300 hover:-translate-y-1"
+            href="#skills"
+            className="group px-8 py-4 bg-primary text-primary-foreground font-body font-semibold rounded-full hover:shadow-glow transition-all duration-300 hover:-translate-y-1 flex items-center gap-2"
           >
-            View My Work
+            <BarChart3 className="w-5 h-5" />
+            View My Skills
           </a>
           <a
-            href="#contact"
-            className="px-8 py-4 border border-foreground/20 text-foreground font-body font-medium rounded-full hover:bg-foreground/5 transition-all duration-300"
+            href="#journey"
+            className="px-8 py-4 border border-primary/30 text-foreground font-body font-medium rounded-full hover:bg-primary/10 hover:border-primary/50 transition-all duration-300"
           >
-            Get in Touch
+            Explore My Journey
           </a>
         </motion.div>
 
@@ -112,7 +146,7 @@ const HeroSection = () => {
             animate={{ y: [0, 10, 0] }}
             transition={{ repeat: Infinity, duration: 2 }}
           >
-            <ArrowDown className="w-6 h-6 text-muted-foreground" />
+            <ArrowDown className="w-6 h-6 text-primary/60" />
           </motion.div>
         </motion.div>
       </motion.div>

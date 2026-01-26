@@ -1,34 +1,27 @@
 /**
- * INDEX PAGE - Main Portfolio Page
- * =================================
- * This is the entry point that combines all sections.
- * 
- * Key concept:
- * - Component composition: Building a page from smaller components
- * - Each component is responsible for its own section
- * - Easy to reorder, add, or remove sections
+ * INDEX PAGE - Data Engineer Portfolio
+ * =====================================
+ * Main page combining all sections for a complete portfolio.
  */
 
 import Navigation from "@/components/Navigation";
 import HeroSection from "@/components/HeroSection";
 import AboutSection from "@/components/AboutSection";
+import SkillsSection from "@/components/SkillsSection";
 import ExperienceSection from "@/components/ExperienceSection";
-import HobbiesSection from "@/components/HobbiesSection";
+import JourneySection from "@/components/JourneySection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 
 const Index = () => {
   return (
-    // Main wrapper - smooth scrolling enabled
     <main className="min-h-screen bg-background">
-      {/* Navigation - sticky at top */}
       <Navigation />
-      
-      {/* Page sections in order */}
       <HeroSection />
       <AboutSection />
+      <SkillsSection />
       <ExperienceSection />
-      <HobbiesSection />
+      <JourneySection />
       <ContactSection />
       <Footer />
     </main>

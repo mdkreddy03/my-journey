@@ -1,101 +1,106 @@
 /**
- * NAVIGATION COMPONENT
- * ====================
- * This is a sticky navigation bar that stays at the top of the page.
- * 
- * Key concepts:
- * - useState: React hook to track if we've scrolled (for styling)
- * - useEffect: React hook to add scroll event listener
- * - Framer Motion: For smooth animations
+ * NAVIGATION - Sleek Tech Header
+ * ===============================
+ * Modern navigation with glassmorphism effect.
  */
 
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { Menu, X, Database } from "lucide-react";
 
 const Navigation = () => {
-  // Track if user has scrolled - changes nav background
-  const [hasScrolled, setHasScrolled] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    // This function runs every time user scrolls
     const handleScroll = () => {
-      // If scrolled more than 50px, set hasScrolled to true
-      setHasScrolled(window.scrollY > 50);
+      setIsScrolled(window.scrollY > 50);
     };
-
-    // Add the listener when component mounts
     window.addEventListener("scroll", handleScroll);
-    
-    // Cleanup: remove listener when component unmounts
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []); // Empty array = run once on mount
+  }, []);
 
-  // Navigation links - easy to modify!
-  const navLinks = [
+  const navItems = [
     { label: "About", href: "#about" },
+    { label: "Skills", href: "#skills" },
     { label: "Experience", href: "#experience" },
-    { label: "Hobbies", href: "#hobbies" },
+    { label: "Journey", href: "#journey" },
     { label: "Contact", href: "#contact" },
   ];
 
   return (
-    <motion.nav
-      // Initial animation when page loads
+    <motion.header
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-      // Dynamic classes based on scroll state
+      transition={{ duration: 0.6 }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        hasScrolled
-          ? "bg-background/90 backdrop-blur-md shadow-soft py-4"
-          : "bg-transparent py-6"
+        isScrolled
+          ? "bg-background/80 backdrop-blur-xl border-b border-border/50 shadow-soft"
+          : "bg-transparent"
       }`}
     >
-      <div className="container mx-auto px-6 flex items-center justify-between">
-        {/* Logo/Name */}
-        <a
-          href="#"
-          className="font-heading text-xl font-semibold text-foreground hover:text-primary transition-colors"
-        >
-          Portfolio
-        </a>
+      <nav className="container mx-auto px-6 py-4">
+        <div className="flex items-center justify-between">
+          {/* Logo */}
+          <a href="#" className="flex items-center gap-2 group">
+            <div className="w-10 h-10 bg-primary/10 border border-primary/20 rounded-xl flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+              <Database className="w-5 h-5 text-primary" />
+            </div>
+            <span className="font-heading text-xl font-bold text-foreground hidden sm:block">
+              Portfolio
+            </span>
+          </a>
 
-        {/* Navigation Links */}
-        <div className="hidden md:flex items-center gap-8">
-          {navLinks.map((link, index) => (
-            <motion.a
-              key={link.label}
-              href={link.href}
-              // Stagger the animation of each link
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 * index, duration: 0.4 }}
-              className="font-body text-sm font-medium text-muted-foreground hover:text-foreground link-underline transition-colors"
-            >
-              {link.label}
-            </motion.a>
-          ))}
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center gap-1">
+            {navItems.map((item) => (
+              <a
+                key={item.label}
+                href={item.href}
+                className="px-4 py-2 font-body text-sm text-muted-foreground hover:text-foreground hover:bg-primary/5 rounded-lg transition-all"
+              >
+                {item.label}
+              </a>
+            ))}
+          </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="md:hidden p-2 text-foreground hover:text-primary transition-colors"
+            aria-label="Toggle menu"
+          >
+            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
         </div>
 
-        {/* Mobile menu button - simplified */}
-        <button className="md:hidden text-foreground">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M4 6h16M4 12h16M4 18h16"
-            />
-          </svg>
-        </button>
-      </div>
-    </motion.nav>
+        {/* Mobile Navigation */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3 }}
+              className="md:hidden mt-4 pb-4 border-t border-border/50"
+            >
+              <div className="flex flex-col gap-2 pt-4">
+                {navItems.map((item) => (
+                  <a
+                    key={item.label}
+                    href={item.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="px-4 py-3 font-body text-foreground hover:text-primary hover:bg-primary/5 rounded-xl transition-all"
+                  >
+                    {item.label}
+                  </a>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </nav>
+    </motion.header>
   );
 };
 
