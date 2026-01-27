@@ -9,14 +9,14 @@ import { MapPin, Mail, Briefcase, Code2, Database, LineChart } from "lucide-reac
 
 const AboutSection = () => {
   const quickFacts = [
-    { icon: Briefcase, label: "Role", value: "Data Engineer" },
-    { icon: MapPin, label: "Location", value: "Your City" },
+    { icon: Briefcase, label: "Role", value: "Data Engineer / Data Analyst" },
+    { icon: MapPin, label: "Location", value: "Denton, Texas" },
     { icon: Database, label: "Specialty", value: "Data Pipelines" },
   ];
 
   const stats = [
-    { value: "5+", label: "Years Experience" },
-    { value: "50+", label: "Projects Delivered" },
+    { value: "4.5+", label: "Years Experience" },
+    { value: "10+", label: "Projects Delivered" },
     { value: "10+", label: "Tools Mastered" },
   ];
 
@@ -102,7 +102,7 @@ const AboutSection = () => {
             
             <div className="space-y-4 text-muted-foreground font-body leading-relaxed mb-8">
               <p>
-                I'm a Data Engineer who loves the challenge of building scalable data 
+                I'm a Data Engineer / Data Analyst who loves the challenge of building scalable data 
                 pipelines and turning complex datasets into actionable insights. My 
                 journey started with curiosity about how businesses make decisions 
                 from numbers.
