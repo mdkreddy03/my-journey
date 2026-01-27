@@ -5,13 +5,13 @@
  */
 
 import { motion } from "framer-motion";
-import { Mail, Linkedin, Github, Twitter, Send, MapPin } from "lucide-react";
+import { Mail, Linkedin, Github, Instagram, Send, MapPin } from "lucide-react";
 
 const socialLinks = [
   { icon: Github, label: "GitHub", href: "#", color: "hover:text-foreground" },
   { icon: Linkedin, label: "LinkedIn", href: "#", color: "hover:text-blue-400" },
-  { icon: Twitter, label: "Twitter", href: "#", color: "hover:text-cyan-400" },
-  { icon: Mail, label: "Email", href: "mailto:hello@example.com", color: "hover:text-primary" },
+  { icon: Instagram, label: "Instagram", href: "#", color: "hover:text-red-400" },
+  { icon: Mail, label: "Email", href: "mailto:mdkreddy03@gmail.com", color: "hover:text-primary" },
 ];
 
 const ContactSection = () => {
@@ -54,7 +54,7 @@ const ContactSection = () => {
 
           {/* Email CTA */}
           <motion.a
-            href="mailto:hello@example.com"
+            href="mailto:mdkreddy03@gmail.com"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -63,7 +63,7 @@ const ContactSection = () => {
             className="inline-flex items-center gap-3 px-8 py-4 bg-primary text-primary-foreground font-body font-semibold rounded-full hover:shadow-glow transition-all duration-300 mb-12"
           >
             <Mail className="w-5 h-5" />
-            hello@example.com
+            mdkreddy03@gmail.com
           </motion.a>
 
           {/* Social links */}
@@ -100,7 +100,7 @@ const ContactSection = () => {
             className="flex items-center justify-center gap-2 mt-12 text-muted-foreground"
           >
             <MapPin className="w-4 h-4" />
-            <span className="font-body text-sm">Based in Your City</span>
+            <span className="font-body text-sm">Based in Denton, Texas</span>
           </motion.div>
         </motion.div>
       </div>
