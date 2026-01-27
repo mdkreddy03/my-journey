@@ -87,7 +87,7 @@ const HeroSection = () => {
           className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/20 rounded-full mb-8"
         >
           <Database className="w-4 h-4 text-primary" />
-          <span className="font-body text-sm text-primary">Data Engineer & Analyst</span>
+          <span className="font-body text-sm text-primary">Data Engineer & Data Analyst</span>
         </motion.div>
 
         {/* Main heading */}
@@ -95,7 +95,7 @@ const HeroSection = () => {
           variants={itemVariants}
           className="font-heading text-5xl md:text-7xl lg:text-8xl font-bold text-foreground mb-6 leading-tight"
         >
-          Your Name
+          Dharani Majji
         </motion.h1>
 
         {/* Tagline with gradient */}
