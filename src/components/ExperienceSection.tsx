@@ -1,25 +1,25 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Calendar, Building2, RotateCcw, CheckCircle2 } from "lucide-react";
 
-// Expanded list of critical Data Engineering terms for gradient highlighting
-const DE_INDUSTRY_TERMS = [
+// Expanded industry terms for automatic gradient highlighting
+const DE_KEYWORDS = [
   "Azure Data Factory", "Databricks", "PySpark", "Snowflake", "SQL", "Airflow", "Power BI", "Python", 
   "dbt", "Azure Synapse", "BigQuery", "Docker", "PostgreSQL", "Apache Spark", "Looker", "GitHub Actions",
   "ETL", "ELT", "Lakehouse", "Real-time", "Streaming", "HIPAA", "Row-Level Security", "RLS", 
-  "Partitioning", "Star-schema", "Great Expectations", "CI/CD", "Forecasting", "Telemetry"
+  "Partitioning", "Star-schema", "CI/CD", "Forecasting", "Telemetry", "Data Pipeline", "Cloud"
 ];
 
 const HighlightTools = ({ text }: { text: string }) => {
   let parts = [text];
-  DE_INDUSTRY_TERMS.forEach((tool) => {
+  DE_KEYWORDS.forEach((keyword) => {
     const newParts: any[] = [];
     parts.forEach((part) => {
       if (typeof part === "string") {
-        const regex = new RegExp(`\\b(${tool})\\b`, "gi");
+        const regex = new RegExp(`\\b(${keyword})\\b`, "gi");
         const split = part.split(regex);
         split.forEach((s, i) => {
-          if (s.toLowerCase() === tool.toLowerCase()) {
+          if (s.toLowerCase() === keyword.toLowerCase()) {
             newParts.push(<span key={i} className="gradient-text font-bold">{s}</span>);
           } else {
             newParts.push(s);
@@ -38,24 +38,17 @@ const ExperienceCard = ({ exp }: { exp: any }) => {
   const [isFlipped, setIsFlipped] = useState(false);
 
   return (
-    <div className="relative w-full mb-6">
+    <div className="relative w-full mb-8 group" style={{ perspective: "1500px" }}>
       <motion.div
-        layout
-        initial={false}
         animate={{ rotateY: isFlipped ? 180 : 0 }}
-        transition={{ duration: 0.7, type: "spring", stiffness: 80, damping: 20 }}
+        transition={{ duration: 0.6, type: "spring", stiffness: 260, damping: 20 }}
         style={{ transformStyle: "preserve-3d" }}
-        className="relative w-full"
+        className="relative w-full h-full"
       >
         {/* FRONT SIDE */}
-        <motion.div
-          className="bg-[#0a0f1a]/95 border border-white/10 rounded-2xl p-6 md:p-8 shadow-2xl flex flex-col"
-          style={{ 
-            backfaceVisibility: "hidden", 
-            position: isFlipped ? "absolute" : "relative", 
-            width: "100%", 
-            top: 0 
-          }}
+        <div
+          className="w-full bg-[#0a0f1a]/95 border border-white/10 rounded-2xl p-6 md:p-8 shadow-2xl flex flex-col"
+          style={{ backfaceVisibility: "hidden" }}
         >
           <div className="flex justify-between items-start mb-4">
             <div className="flex items-center gap-2 text-primary font-mono text-[10px] uppercase tracking-tighter">
@@ -79,8 +72,8 @@ const ExperienceCard = ({ exp }: { exp: any }) => {
             {exp.skills.map((skill: string) => (
               <motion.span 
                 key={skill}
-                whileHover={{ y: -3, scale: 1.05, backgroundColor: "rgba(255,255,255,0.1)", borderColor: "rgba(94, 234, 212, 0.4)" }}
-                className="px-3 py-1 bg-white/5 text-gray-300 text-[10px] rounded-lg border border-white/10 cursor-default transition-all"
+                whileHover={{ y: -4, scale: 1.1, backgroundColor: "rgba(255,255,255,0.08)", borderColor: "rgba(94, 234, 212, 0.5)" }}
+                className="px-3 py-1 bg-white/5 text-gray-300 text-[10px] rounded-lg border border-white/10 cursor-default transition-all duration-200"
               >
                 {skill}
               </motion.span>
@@ -89,23 +82,17 @@ const ExperienceCard = ({ exp }: { exp: any }) => {
 
           <button 
             onClick={() => setIsFlipped(true)}
-            className="w-full pt-4 border-t border-white/5 flex items-center justify-between text-primary font-mono text-[10px] uppercase tracking-widest hover:text-white transition-colors group"
+            className="w-full pt-4 border-t border-white/5 flex items-center justify-between text-primary font-mono text-[10px] uppercase tracking-widest hover:text-white transition-colors"
           >
-            <span>Click for Strategic Outcomes</span>
+            <span>View Strategic Outcomes</span>
             <RotateCcw className="w-4 h-4 group-hover:rotate-180 transition-transform duration-500" />
           </button>
-        </motion.div>
+        </div>
 
         {/* BACK SIDE */}
-        <motion.div
-          className="bg-[#0a0f1a] border border-primary/30 rounded-2xl p-6 md:p-8 shadow-glow flex flex-col"
-          style={{ 
-            backfaceVisibility: "hidden", 
-            transform: "rotateY(180deg)", 
-            position: isFlipped ? "relative" : "absolute", 
-            width: "100%", 
-            top: 0 
-          }}
+        <div
+          className="absolute inset-0 w-full h-full bg-[#0a0f1a] border border-primary/30 rounded-2xl p-6 md:p-8 shadow-glow flex flex-col"
+          style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
         >
           <div className="flex justify-between items-center border-b border-white/10 pb-4 mb-5">
             <div>
@@ -115,22 +102,24 @@ const ExperienceCard = ({ exp }: { exp: any }) => {
             <CheckCircle2 className="w-5 h-5 text-primary" />
           </div>
 
-          <ul className="space-y-4 mb-8">
-            {exp.responsibilities.map((point: string, i: number) => (
-              <li key={i} className="text-[12px] text-gray-300 flex gap-3 leading-snug group">
-                <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-primary shrink-0 shadow-[0_0_8px_rgba(94,234,212,0.6)]" />
-                <span><HighlightTools text={point} /></span>
-              </li>
-            ))}
-          </ul>
+          <div className="overflow-y-auto flex-grow custom-scrollbar pr-2">
+            <ul className="space-y-3.5">
+              {exp.responsibilities.map((point: string, i: number) => (
+                <li key={i} className="text-[12px] text-gray-300 flex gap-3 leading-snug">
+                  <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-primary shrink-0 shadow-[0_0_8px_rgba(94,234,212,0.6)]" />
+                  <span><HighlightTools text={point} /></span>
+                </li>
+              ))}
+            </ul>
+          </div>
 
           <button 
             onClick={() => setIsFlipped(false)}
-            className="mt-auto pt-4 border-t border-white/5 flex items-center justify-center gap-2 text-muted-foreground hover:text-primary transition-colors text-[10px] font-mono uppercase tracking-widest"
+            className="mt-6 pt-4 border-t border-white/5 flex items-center justify-center gap-2 text-muted-foreground hover:text-primary transition-colors text-[10px] font-mono uppercase tracking-widest"
           >
             Return to Overview
           </button>
-        </motion.div>
+        </div>
       </motion.div>
     </div>
   );
