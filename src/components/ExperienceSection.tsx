@@ -1,10 +1,6 @@
 /**
  * EXPERIENCE SECTION - Professional Portfolio
  * ===========================================
- * FIXES APPLIED:
- * 1. Forced Visibility: Uses conditional rendering + z-index to fix the "blank back" issue.
- * 2. Scrolling Fix: Added a dedicated scroll container for the 8 extended points.
- * 3. Timeline Sync: Line and pointer now track perfectly together.
  */
 
 import { useState, useRef } from "react";
@@ -112,6 +108,14 @@ const ExperienceCard = ({ exp }) => {
         >
           <div className="mb-6 flex items-center justify-between border-b border-white/10 pb-4">
             <h3 className="text-xl font-bold text-primary tracking-widest uppercase">Responsibilities</h3>
+            <h3 className="text-xl font-bold text-primary tracking-widest uppercase">  "Resolved the pain point of financial data drift by developing a dbt-based transformation layer, ensuring 99.8% reconciliation accuracy.",
+      "Optimized BigQuery slot utilization and partitioned table structures, achieving a 60% reduction in query execution times for the analytics team.",
+      "Minimized production downtime by containerizing data workflows with Docker, reducing environment-related deployment errors by 25%.",
+      "Eliminated data quality blind spots by implementing automated validation checks via Great Expectations, catching 95% of upstream schema drifts.",
+      "Optimized executive decision-making speed by architecting star-schema models, increasing dashboard refresh rates by 3x.",
+      "Resolved the manual reporting burden by automating 15+ weekly data extraction tasks via Python, saving the engineering team 60 hours per month.",
+      "Streamlined high-volume ingestion from 10+ third-party APIs into a centralized warehouse for unified customer behavior profiling.",
+      "Collaborated with product teams to translate complex user engagement metrics into actionable data points for a base of 1M+ active users."</h3>
             <CheckCircle2 className="w-5 h-5 text-primary" />
           </div>
 
