@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { motion, useScroll, useSpring, useTransform, AnimatePresence } from "framer-motion";
+import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import { Calendar, Building2, RotateCcw, PenTool, CheckCircle2 } from "lucide-react";
 
 const experiences = [
@@ -43,7 +43,7 @@ const experiences = [
   }
 ];
 
-// Helper to highlight tools with the specific "motion color" from your screenshot
+// Helper to apply the gradient-text to tools within descriptions
 const HighlightTools = ({ text, tools }: { text: string; tools: string[] }) => {
   let parts = [text];
   tools.forEach((tool) => {
@@ -55,7 +55,7 @@ const HighlightTools = ({ text, tools }: { text: string; tools: string[] }) => {
         split.forEach((s, i) => {
           if (s.toLowerCase() === tool.toLowerCase()) {
             newParts.push(
-              <span key={i} className="text-[#60a5fa] font-bold drop-shadow-[0_0_3px_rgba(96,165,250,0.5)]">
+              <span key={i} className="gradient-text font-semibold">
                 {s}
               </span>
             );
@@ -79,11 +79,10 @@ const ExperienceCard = ({ exp }: { exp: typeof experiences[0] }) => {
     <motion.div
       layout
       animate={{ 
-        height: isFlipped ? 650 : 400,
-        width: "100%"
+        height: isFlipped ? "600px" : "340px" 
       }}
-      transition={{ duration: 0.6, type: "spring", stiffness: 100, damping: 22 }}
-      className="relative cursor-pointer mb-12"
+      transition={{ duration: 0.5, type: "spring", stiffness: 100, damping: 20 }}
+      className="relative cursor-pointer mb-10 group"
       style={{ perspective: "2000px" }}
       onClick={() => setIsFlipped(!isFlipped)}
     >
@@ -94,65 +93,64 @@ const ExperienceCard = ({ exp }: { exp: typeof experiences[0] }) => {
         transition={{ duration: 0.6, type: "spring", stiffness: 100, damping: 20 }}
         style={{ transformStyle: "preserve-3d" }}
       >
-        {/* FRONT SIDE (Compact Mode) */}
+        {/* FRONT SIDE - Compact Layout */}
         <div
-          className="absolute inset-0 w-full h-full bg-[#0a0f1a] border border-white/10 rounded-2xl p-6 md:p-8 flex flex-col shadow-2xl"
+          className="absolute inset-0 w-full h-full bg-[#0a0f1a]/90 backdrop-blur-md border border-white/10 rounded-2xl p-6 flex flex-col shadow-2xl"
           style={{ backfaceVisibility: "hidden", zIndex: isFlipped ? 0 : 2 }}
         >
           {exp.type === 'current' && (
-            <div className="bg-primary/20 text-primary px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest w-fit mb-3 border border-primary/30">
+            <div className="bg-primary/20 text-primary px-3 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-widest w-fit mb-3 border border-primary/30">
               Current Role
             </div>
           )}
           <div className="flex items-center gap-2 text-muted-foreground mb-1 font-mono text-[10px]">
-            <Calendar className="w-3 h-3 text-primary" /> {exp.period}
+            <Calendar className="w-3.5 h-3.5 text-primary" /> {exp.period}
           </div>
-          <h3 className="text-xl md:text-2xl font-bold text-white mb-1">{exp.role}</h3>
-          <div className="flex items-center gap-2 text-primary font-medium mb-4 text-sm">
-            <Building2 className="w-4 h-4" /> {exp.company}
+          <h3 className="text-xl font-bold text-white mb-0.5">{exp.role}</h3>
+          <div className="flex items-center gap-2 text-primary font-medium mb-4 text-xs">
+            <Building2 className="w-3.5 h-3.5" /> {exp.company}
           </div>
           
-          <p className="text-gray-400 text-xs italic border-l-2 border-primary/30 pl-4 mb-4 line-clamp-3">
+          <p className="text-gray-400 text-[11px] leading-relaxed italic border-l-2 border-primary/40 pl-3 mb-5">
             {exp.description}
           </p>
 
-          <div className="flex flex-wrap gap-1.5 mt-auto">
-            {exp.skills.slice(0, 6).map((skill) => (
-              <span key={skill} className="px-2 py-0.5 bg-white/5 text-gray-300 text-[9px] rounded-md border border-white/10">
+          <div className="flex flex-wrap gap-1.5 mt-auto mb-3">
+            {exp.skills.map((skill) => (
+              <span key={skill} className="px-2 py-0.5 bg-white/5 text-gray-400 text-[9px] rounded-md border border-white/10">
                 {skill}
               </span>
             ))}
-            {exp.skills.length > 6 && <span className="text-[9px] text-primary/60 font-mono">+{exp.skills.length - 6} more</span>}
           </div>
 
-          <div className="mt-4 pt-4 border-t border-white/5 flex items-center justify-between text-primary font-mono text-[9px] uppercase tracking-widest">
-            <span>Click to expand Impact</span>
-            <RotateCcw className="w-3 h-3 animate-pulse" />
+          <div className="pt-3 border-t border-white/5 flex items-center justify-between text-primary font-mono text-[9px] uppercase tracking-widest">
+            <span className="group-hover:text-white transition-all">Click for Impact & Results</span>
+            <RotateCcw className="w-3.5 h-3.5 animate-pulse" />
           </div>
         </div>
 
-        {/* BACK SIDE (Expanded Mode) */}
+        {/* BACK SIDE - Expanded Layout */}
         <div
-          className="absolute inset-0 w-full h-full bg-[#0a0f1a] border border-primary/40 rounded-2xl p-6 md:p-8 flex flex-col shadow-[0_0_30px_rgba(var(--primary-rgb),0.1)]"
+          className="absolute inset-0 w-full h-full bg-[#0a0f1a] border border-primary/40 rounded-2xl p-7 flex flex-col shadow-glow"
           style={{ 
             backfaceVisibility: "hidden", 
             transform: "rotateY(180deg)",
             zIndex: isFlipped ? 10 : 0 
           }}
         >
-          <div className="mb-6 flex items-center justify-between border-b border-white/10 pb-4">
+          <div className="mb-5 flex items-center justify-between border-b border-white/10 pb-4">
             <div>
-              <h3 className="text-lg font-bold text-primary tracking-widest uppercase">Responsibilities</h3>
-              <p className="text-[10px] text-muted-foreground font-mono">DATA & OUTCOMES</p>
+              <h3 className="text-sm font-bold text-primary tracking-widest uppercase">Responsibilities</h3>
+              <p className="text-[8px] text-muted-foreground font-mono mt-0.5">MEASURABLE BUSINESS OUTCOMES</p>
             </div>
             <CheckCircle2 className="w-5 h-5 text-primary" />
           </div>
 
-          <div className="flex-grow overflow-y-auto pr-3 custom-scrollbar">
-            <ul className="space-y-5">
+          <div className="flex-grow overflow-y-auto pr-2 custom-scrollbar">
+            <ul className="space-y-2.5">
               {exp.responsibilities.map((point, i) => (
-                <li key={i} className="text-[13px] text-gray-300 flex gap-4 leading-relaxed group">
-                  <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-primary shrink-0 shadow-[0_0_8px_#60a5fa]" />
+                <li key={i} className="text-[12px] text-gray-300 flex gap-3 leading-snug group">
+                  <span className="mt-1.5 h-1 w-1 rounded-full bg-primary shrink-0 shadow-[0_0_8px_#60a5fa]" />
                   <span>
                     <HighlightTools text={point} tools={exp.skills} />
                   </span>
@@ -161,15 +159,17 @@ const ExperienceCard = ({ exp }: { exp: typeof experiences[0] }) => {
             </ul>
           </div>
 
-          <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-center gap-3 text-muted-foreground hover:text-primary transition-colors">
-            <PenTool className="w-4 h-4" />
-            <span className="text-[10px] font-mono uppercase tracking-widest">Click to return to overview</span>
+          <div className="mt-5 pt-4 border-t border-white/10 flex items-center justify-center gap-2 text-muted-foreground hover:text-primary transition-colors cursor-pointer">
+            <PenTool className="w-3.5 h-3.5" />
+            <span className="text-[9px] font-mono uppercase tracking-widest">Return to Overview</span>
           </div>
         </div>
       </motion.div>
     </motion.div>
   );
 };
+
+
 
 const ExperienceSection = () => {
   const containerRef = useRef(null);
@@ -183,9 +183,9 @@ const ExperienceSection = () => {
   const pointerPos = useTransform(scrollSpring, [0, 1], ["0%", "100%"]);
 
   return (
-    <section id="experience" ref={containerRef} className="py-20 bg-[#020617] overflow-hidden">
+    <section id="experience" ref={containerRef} className="py-24 bg-[#020617] overflow-hidden">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
+        <div className="text-center mb-20">
           <h2 className="text-4xl md:text-6xl font-bold text-white mb-4 tracking-tighter">
             Professional <span className="text-[#60a5fa] italic">Experience</span>
           </h2>
@@ -195,10 +195,10 @@ const ExperienceSection = () => {
         </div>
 
         <div className="relative max-w-4xl mx-auto">
-          {/* TRACK LINE */}
+          {/* TIMELINE TRACK */}
           <div className="absolute left-0 md:left-0 top-0 bottom-0 w-[1px] bg-white/10">
             <motion.div style={{ height: pathHeight }} className="absolute top-0 w-full bg-[#60a5fa] shadow-[0_0_15px_#60a5fa] origin-top" />
-            <motion.div style={{ top: pointerPos }} className="absolute -left-[5px] w-3 h-3 rounded-full bg-[#60a5fa] border-2 border-[#020617] z-20" />
+            <motion.div style={{ top: pointerPos }} className="absolute -left-[5px] w-2.5 h-2.5 rounded-full bg-[#60a5fa] border-2 border-[#020617] z-20" />
           </div>
 
           <div className="pl-8 md:pl-16">
