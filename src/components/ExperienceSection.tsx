@@ -84,7 +84,7 @@ const ExperienceCard = ({ exp }: { exp: any }) => {
           </div>
 
           <div className="w-full pt-4 border-t border-border flex items-center justify-between text-primary font-mono text-[10px] uppercase tracking-widest group-hover:text-foreground transition-colors">
-            <span>Click to View Strategic Outcomes</span>
+            <span>Click to View for impact and results</span>
             <RotateCcw className="w-4 h-4 group-hover:rotate-180 transition-transform duration-500" />
           </div>
         </div>
@@ -96,8 +96,8 @@ const ExperienceCard = ({ exp }: { exp: any }) => {
         >
           <div className="flex justify-between items-center border-b border-border pb-4 mb-5">
             <div>
-              <h3 className="text-sm font-bold text-primary tracking-widest uppercase">Strategic Impact & Deliverables</h3>
-              <p className="text-[9px] text-muted-foreground font-mono mt-1">CORE CONTRIBUTIONS & BUSINESS VALUE</p>
+              <h3 className="text-sm font-bold text-primary tracking-widest uppercase">RESPONSIBILITIES</h3>
+              <p className="text-[9px] text-muted-foreground font-mono mt-1">CORE CONTRIBUTIONS & BUSINESS OUTCOMES</p>
             </div>
             <CheckCircle2 className="w-5 h-5 text-primary" />
           </div>
