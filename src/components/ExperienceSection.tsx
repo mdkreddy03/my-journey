@@ -1,7 +1,8 @@
 /**
- * EXPERIENCE SECTION - Professional Timeline
+ * EXPERIENCE SECTION - Professional Portfolio
  * ===========================================
- * Fixed: Scrolling Line + Pointer, Responsibility rendering, and tight spacing.
+ * Fixed: Flip-card responsibility visibility, growing timeline line, 
+ * and consistent role borders.
  */
 
 import { useState, useRef } from "react";
@@ -18,14 +19,14 @@ const experiences = [
     skills: ["Azure Data Factory", "Databricks", "PySpark", "Snowflake", "SQL", "Airflow", "Power BI", "Python", "dbt", "Azure Synapse"],
     type: "current",
     responsibilities: [
-      "Resolved data latency pain points by architecting a PySpark-based streaming layer, reducing time-to-insight from 15 minutes to sub-30 seconds.",
-      "Optimized compute-heavy Spark clusters and Snowflake auto-scaling, resulting in a documented 35% reduction in monthly cloud expenditure.",
-      "Eliminated manual auditing bottlenecks by architecting automated ETL workflows in Airflow, achieving 100% HIPAA compliance reporting accuracy.",
-      "Mitigated data security risks through Row-Level Security (RLS) and dynamic masking, protecting sensitive clinical data for 50M+ annual records.",
-      "Optimized query performance for emergency department reporting by resolving complex partitioning bottlenecks, improving dashboard load times by 40%.",
-      "Unified fragmented clinical data silos into a single verified source of truth, standardizing 200+ KPIs across diverse hospital units.",
-      "Engineered high-availability data architectures that maintained 99.99% uptime during the migration of 500TB of legacy on-premise data.",
-      "Resolved data-driven staffing shortages by integrating real-time telemetry into high-fidelity forecasting models for hospital leadership."
+      "Resolved data latency pain points by architecting a PySpark-based streaming layer, reducing time-to-insight from 15 minutes to sub-30 seconds. [cite: 2026-01-22, 2025-12-17]",
+      "Optimized compute-heavy Spark clusters and Snowflake auto-scaling, resulting in a documented 35% reduction in monthly cloud expenditure. [cite: 2025-12-17]",
+      "Eliminated manual auditing bottlenecks by architecting automated ETL workflows in Airflow, achieving 100% HIPAA compliance reporting accuracy. [cite: 2025-12-17]",
+      "Mitigated data security risks through Row-Level Security (RLS) and dynamic masking, protecting sensitive clinical data for 50M+ annual records. [cite: 2025-12-17]",
+      "Optimized query performance for emergency department reporting by resolving complex partitioning bottlenecks, improving dashboard load times by 40%. [cite: 2025-12-17]",
+      "Unified fragmented clinical data silos into a single verified source of truth, standardizing 200+ KPIs across diverse hospital units. [cite: 2025-12-17]",
+      "Engineered high-availability data architectures that maintained 99.99% uptime during the migration of 500TB of legacy on-premise data. [cite: 2025-12-17]",
+      "Resolved data-driven staffing shortages by integrating real-time telemetry into high-fidelity forecasting models for hospital leadership. [cite: 2026-01-22, 2025-12-17]"
     ]
   },
   {
@@ -37,14 +38,14 @@ const experiences = [
     skills: ["Python", "dbt", "BigQuery", "Docker", "SQL", "Looker", "Apache Spark", "GitHub", "Power BI", "PostgreSQL"],
     type: "past",
     responsibilities: [
-      "Resolved the pain point of financial data drift by developing a dbt-based transformation layer, ensuring 99.8% reconciliation accuracy.",
-      "Optimized BigQuery slot utilization and partitioned table structures, achieving a 60% reduction in query execution times for the analytics team.",
-      "Minimized production downtime by containerizing data workflows with Docker, reducing environment-related deployment errors by 25%.",
-      "Eliminated data quality blind spots by implementing automated validation checks via Great Expectations, catching 95% of upstream schema drifts.",
-      "Optimized executive decision-making speed by architecting star-schema models, increasing dashboard refresh rates by 3x.",
-      "Resolved the manual reporting burden by automating 15+ weekly data extraction tasks via Python, saving the engineering team 60 hours per month.",
-      "Streamlined high-volume ingestion from 10+ third-party APIs into a centralized warehouse for unified customer behavior profiling.",
-      "Collaborated with product teams to translate complex user engagement metrics into actionable data points for a base of 1M+ active users."
+      "Resolved the pain point of financial data drift by developing a dbt-based transformation layer, ensuring 99.8% reconciliation accuracy. [cite: 2025-12-17]",
+      "Optimized BigQuery slot utilization and partitioned table structures, achieving a 60% reduction in query execution times for the analytics team. [cite: 2025-12-17]",
+      "Minimized production downtime by containerizing data workflows with Docker, reducing environment-related deployment errors by 25%. [cite: 2025-12-17]",
+      "Eliminated data quality blind spots by implementing automated validation checks via Great Expectations, catching 95% of upstream schema drifts. [cite: 2025-12-17]",
+      "Optimized executive decision-making speed by architecting star-schema models, increasing dashboard refresh rates by 3x. [cite: 2025-12-17]",
+      "Resolved the manual reporting burden by automating 15+ weekly data extraction tasks via Python, saving the engineering team 60 hours per month. [cite: 2025-12-17]",
+      "Streamlined high-volume ingestion from 10+ third-party APIs into a centralized warehouse for unified customer behavior profiling. [cite: 2025-12-17]",
+      "Collaborated with product teams to translate complex user engagement metrics into actionable data points for a base of 1M+ active users. [cite: 2025-12-17]"
     ]
   }
 ];
@@ -54,7 +55,7 @@ const ExperienceCard = ({ exp }) => {
 
   return (
     <div 
-      className="relative min-h-[520px] w-full cursor-pointer group"
+      className="relative min-h-[550px] w-full cursor-pointer group"
       style={{ perspective: "2000px" }}
       onClick={() => setIsFlipped(!isFlipped)}
     >
@@ -67,7 +68,7 @@ const ExperienceCard = ({ exp }) => {
       >
         {/* FRONT SIDE */}
         <div 
-          className={`absolute inset-0 w-full h-full bg-[#0a0f1a] border rounded-3xl p-8 flex flex-col shadow-2xl ${exp.type === 'current' ? 'border-primary/40' : 'border-border'}`}
+          className="absolute inset-0 w-full h-full bg-[#0a0f1a] border-2 border-primary/30 rounded-3xl p-8 flex flex-col shadow-2xl overflow-hidden"
           style={{ backfaceVisibility: "hidden" }}
         >
           {exp.type === 'current' && (
@@ -81,11 +82,11 @@ const ExperienceCard = ({ exp }) => {
             {exp.period}
           </div>
 
-          <h3 className="text-2xl font-bold text-foreground mb-1 group-hover:text-primary transition-colors">
+          <h3 className="text-3xl font-bold text-foreground mb-1 group-hover:text-primary transition-colors">
             {exp.role}
           </h3>
           
-          <div className="flex items-center gap-2 text-primary font-medium mb-6">
+          <div className="flex items-center gap-2 text-primary/90 font-medium mb-6">
             <Building2 className="w-4 h-4" />
             {exp.company}
           </div>
@@ -104,8 +105,8 @@ const ExperienceCard = ({ exp }) => {
                 {exp.skills.map((skill) => (
                   <motion.span 
                     key={skill}
-                    whileHover={{ scale: 1.05, backgroundColor: "rgba(var(--primary-rgb), 0.1)" }}
-                    className="px-2.5 py-1 bg-secondary/30 text-secondary-foreground text-[10px] rounded-lg border border-border"
+                    whileHover={{ scale: 1.05, backgroundColor: "rgba(var(--primary-rgb), 0.15)" }}
+                    className="px-3 py-1 bg-secondary/30 text-secondary-foreground text-[10px] rounded-xl border border-border"
                   >
                     {skill}
                   </motion.span>
@@ -114,27 +115,28 @@ const ExperienceCard = ({ exp }) => {
             </div>
           </div>
 
-          <div className="mt-6 pt-4 border-t border-border flex items-center justify-between text-primary font-mono text-[10px] uppercase tracking-widest">
-            <span>Click to view responsibilities & results</span>
-            <RotateCcw className="w-4 h-4 animate-spin-slow" />
+          <div className="mt-8 pt-4 border-t border-border flex items-center justify-between text-primary font-mono text-[10px] uppercase tracking-widest">
+            <span>Click to view Responsibilities & Results</span>
+            <RotateCcw className="w-4 h-4" />
           </div>
         </div>
 
         {/* BACK SIDE */}
         <div 
-          className="absolute inset-0 w-full h-full bg-[#0a0f1a] border border-primary/40 rounded-3xl p-8 flex flex-col shadow-glow"
+          className="absolute inset-0 w-full h-full bg-[#0a0f1a] border-2 border-primary/50 rounded-3xl p-8 flex flex-col shadow-glow"
           style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
         >
           <div className="mb-4 flex items-center justify-between border-b border-border pb-3">
             <h3 className="text-sm font-bold text-primary tracking-widest uppercase">Responsibilities</h3>
-            <span className="text-[9px] font-mono text-muted-foreground">Data & Outcomes</span>
+            <span className="text-[9px] font-mono text-muted-foreground uppercase">Data & Outcomes</span>
           </div>
 
-          <ul className="space-y-3 overflow-y-auto pr-2 flex-grow custom-scrollbar">
+          {/* This container ensures points reflect properly once flipped */}
+          <ul className="space-y-4 overflow-y-auto pr-3 flex-grow custom-scrollbar">
             {exp.responsibilities.map((point, i) => (
-              <li key={i} className="text-[12px] text-muted-foreground flex gap-3 leading-relaxed">
-                <span className="text-primary mt-1.5 h-1 w-1 rounded-full bg-primary shrink-0 shadow-glow" />
-                <span>{point}</span>
+              <li key={i} className="text-[13px] text-muted-foreground flex gap-4 leading-relaxed group/item">
+                <span className="text-primary mt-1.5 h-1.5 w-1.5 rounded-full bg-primary shrink-0 shadow-[0_0_8px_rgba(var(--primary-rgb),0.8)]" />
+                <span className="group-hover/item:text-foreground transition-colors">{point}</span>
               </li>
             ))}
           </ul>
@@ -158,28 +160,33 @@ const ExperienceSection = () => {
 
   const scrollSpring = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
   
-  // Transform the progress into height for the line and position for the pointer
+  // Transform progress into height for both the line and pointer
   const pathHeight = useTransform(scrollSpring, [0, 1], ["0%", "100%"]);
   const pointerPos = useTransform(scrollSpring, [0, 1], ["0%", "100%"]);
 
   return (
-    <section id="experience" ref={containerRef} className="py-20 relative bg-[#020617]">
+    <section id="experience" ref={containerRef} className="py-20 relative bg-[#020617] overflow-hidden">
+      <div className="absolute inset-0 -z-10 tech-grid opacity-5" />
+      
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4 tracking-tight">
-            Professional <span className="text-primary italic">Experience</span>
+          <h2 className="text-4xl md:text-6xl font-bold text-foreground mb-4 tracking-tighter">
+            Experience <span className="text-primary italic">Portfolio</span>
           </h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto text-lg italic">
+            Synthesizing 4.5+ years of data engineering expertise to resolve complex infrastructure challenges. [cite: 2026-01-12, 2025-12-18]
+          </p>
         </div>
 
-        <div className="relative max-w-4xl mx-auto">
+        <div className="relative max-w-5xl mx-auto">
           {/* THE DYNAMIC TIMELINE TRACK */}
-          <div className="absolute left-0 md:left-8 top-0 bottom-0 w-[2px] bg-white/5">
-            {/* THE FLOWING LINE */}
+          <div className="absolute left-0 md:left-12 top-0 bottom-0 w-[2px] bg-white/10">
+            {/* GROWING LINE: Follows scroll precisely */}
             <motion.div 
               style={{ height: pathHeight }}
-              className="absolute top-0 w-full bg-primary shadow-[0_0_15px_rgba(var(--primary-rgb),0.5)] origin-top"
+              className="absolute top-0 w-full bg-primary shadow-[0_0_15px_rgba(var(--primary-rgb),0.6)] origin-top"
             />
-            {/* THE GLIDING POINTER */}
+            {/* GLIDING POINTER: Follows scroll precisely */}
             <motion.div 
               style={{ top: pointerPos }}
               className="absolute -left-[11px] w-6 h-6 rounded-full bg-primary border-4 border-[#020617] shadow-glow z-20 flex items-center justify-center"
@@ -188,15 +195,14 @@ const ExperienceSection = () => {
             </motion.div>
           </div>
 
-          {/* CARDS CONTAINER - Reduced space-y from 24 to 12 */}
           <div className="space-y-12">
             {experiences.map((exp) => (
               <motion.div
                 key={exp.id}
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                className="relative pl-12 md:pl-24"
+                viewport={{ once: true, margin: "-100px" }}
+                className="relative pl-12 md:pl-32"
               >
                 <ExperienceCard exp={exp} />
               </motion.div>
