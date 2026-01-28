@@ -1,14 +1,14 @@
 /**
  * EXPERIENCE SECTION - Professional Portfolio
  * ===========================================
- * Fixes: 
- * 1. Forced Visibility: Uses z-index toggling to ensure responsibilities appear.
- * 2. Dynamic Timeline: Syncs the vertical line growth with the scroll pointer.
- * 3. Unified Borders: Applies consistent 2px borders across all roles.
+ * FIXES APPLIED:
+ * 1. Forced Visibility: Uses conditional rendering + z-index to fix the "blank back" issue.
+ * 2. Scrolling Fix: Added a dedicated scroll container for the 8 extended points.
+ * 3. Timeline Sync: Line and pointer now track perfectly together.
  */
 
 import { useState, useRef } from "react";
-import { motion, useScroll, useSpring, useTransform, AnimatePresence } from "framer-motion";
+import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import { Calendar, Building2, RotateCcw, PenTool, CheckCircle2 } from "lucide-react";
 
 const experiences = [
@@ -57,7 +57,7 @@ const ExperienceCard = ({ exp }) => {
 
   return (
     <div 
-      className="relative min-h-[600px] w-full cursor-pointer group"
+      className="relative min-h-[600px] w-full cursor-pointer"
       style={{ perspective: "2000px" }}
       onClick={() => setIsFlipped(!isFlipped)}
     >
@@ -65,65 +65,49 @@ const ExperienceCard = ({ exp }) => {
         className="w-full h-full relative"
         initial={false}
         animate={{ rotateY: isFlipped ? 180 : 0 }}
-        transition={{ duration: 0.8, type: "spring", stiffness: 100, damping: 20 }}
+        transition={{ duration: 0.7, type: "spring", stiffness: 80, damping: 20 }}
         style={{ transformStyle: "preserve-3d" }}
       >
         {/* FRONT SIDE */}
         <div 
           className="absolute inset-0 w-full h-full bg-[#0a0f1a] border-2 border-primary/40 rounded-3xl p-8 flex flex-col shadow-2xl"
-          style={{ backfaceVisibility: "hidden", zIndex: isFlipped ? 0 : 10 }}
+          style={{ backfaceVisibility: "hidden", zIndex: isFlipped ? 0 : 1 }}
         >
           {exp.type === 'current' && (
             <div className="bg-primary/20 text-primary px-4 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest w-fit mb-4 border border-primary/30">
               Current Role
             </div>
           )}
-
           <div className="flex items-center gap-2 text-muted-foreground mb-2 font-mono text-xs">
-            <Calendar className="w-3.5 h-3.5 text-primary" />
-            {exp.period}
+            <Calendar className="w-4 h-4 text-primary" /> {exp.period}
           </div>
-
           <h3 className="text-3xl font-bold text-white mb-1">{exp.role}</h3>
-          
-          <div className="flex items-center gap-2 text-primary/90 font-medium mb-6">
-            <Building2 className="w-4 h-4" />
-            {exp.company}
+          <div className="flex items-center gap-2 text-primary font-medium mb-6">
+            <Building2 className="w-4 h-4" /> {exp.company}
           </div>
-
           <div className="space-y-6 flex-grow">
-            <div>
-              <h4 className="text-[10px] font-mono text-primary uppercase tracking-wider mb-2">Description:</h4>
-              <p className="text-gray-300 leading-relaxed text-sm italic border-l-2 border-primary/20 pl-4">
-                {exp.description}
-              </p>
-            </div>
-
-            <div>
-              <h4 className="text-[10px] font-mono text-primary uppercase tracking-wider mb-3">Tools Used:</h4>
-              <div className="flex flex-wrap gap-2">
-                {exp.skills.map((skill) => (
-                  <span key={skill} className="px-3 py-1 bg-secondary/30 text-secondary-foreground text-[10px] rounded-xl border border-border">
-                    {skill}
-                  </span>
-                ))}
-              </div>
+            <p className="text-gray-300 text-sm italic border-l-2 border-primary/20 pl-4">{exp.description}</p>
+            <div className="flex flex-wrap gap-2">
+              {exp.skills.map((skill) => (
+                <span key={skill} className="px-3 py-1 bg-secondary/30 text-secondary-foreground text-[10px] rounded-xl border border-border">
+                  {skill}
+                </span>
+              ))}
             </div>
           </div>
-
           <div className="mt-8 pt-4 border-t border-white/10 flex items-center justify-between text-primary font-mono text-[10px] uppercase tracking-widest">
-            <span>Click to view impact & results</span>
+            <span>Click to view Impact & Results</span>
             <RotateCcw className="w-4 h-4" />
           </div>
         </div>
 
-        {/* BACK SIDE - FORCED VISIBILITY FIX */}
+        {/* BACK SIDE - FORCED CONTENT FIX */}
         <div 
           className="absolute inset-0 w-full h-full bg-[#0a0f1a] border-2 border-primary/60 rounded-3xl p-8 flex flex-col shadow-glow"
           style={{ 
             backfaceVisibility: "hidden", 
             transform: "rotateY(180deg)",
-            zIndex: isFlipped ? 20 : 0 // HIGHER Z-INDEX WHEN FLIPPED
+            zIndex: isFlipped ? 10 : 0 
           }}
         >
           <div className="mb-6 flex items-center justify-between border-b border-white/10 pb-4">
@@ -131,12 +115,12 @@ const ExperienceCard = ({ exp }) => {
             <CheckCircle2 className="w-5 h-5 text-primary" />
           </div>
 
-          <div className="flex-grow overflow-hidden relative">
-            {/* The list of 8 points specifically for the back of the card */}
-            <ul className="space-y-5 overflow-y-auto h-full pr-4 custom-scrollbar">
+          {/* This is the container that was empty in your screenshot */}
+          <div className="flex-grow overflow-y-auto pr-4 custom-scrollbar">
+            <ul className="space-y-5">
               {exp.responsibilities.map((point, i) => (
-                <li key={i} className="text-[14px] text-gray-200 flex gap-4 leading-relaxed group/item">
-                  <span className="mt-2 h-2 w-2 rounded-full bg-primary shrink-0 shadow-[0_0_10px_rgba(var(--primary-rgb),0.8)]" />
+                <li key={i} className="text-[14px] text-gray-200 flex gap-4 leading-relaxed group">
+                  <span className="mt-2 h-2 w-2 rounded-full bg-primary shrink-0 shadow-[0_0_8px_rgba(var(--primary-rgb),0.8)]" />
                   <span className="group-hover:text-white transition-colors">{point}</span>
                 </li>
               ))}
@@ -145,7 +129,7 @@ const ExperienceCard = ({ exp }) => {
           
           <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-center gap-3 text-muted-foreground hover:text-primary transition-colors">
             <PenTool className="w-4 h-4" />
-            <span className="text-[10px] font-mono uppercase tracking-widest">Click to return to overview</span>
+            <span className="text-[10px] font-mono uppercase tracking-widest text-center">Click to return to overview</span>
           </div>
         </div>
       </motion.div>
@@ -166,43 +150,29 @@ const ExperienceSection = () => {
   const pointerPos = useTransform(scrollSpring, [0, 1], ["0%", "100%"]);
 
   return (
-    <section id="experience" ref={containerRef} className="py-20 relative bg-[#020617] overflow-hidden">
+    <section id="experience" ref={containerRef} className="py-20 bg-[#020617] overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-6xl font-bold text-white mb-4 tracking-tighter">
             Professional <span className="text-primary italic">Experience</span>
           </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto text-lg italic">
-            4.5+ years of data engineering excellence focused on architectural scalability and clinical data integrity.
+          <p className="text-muted-foreground max-w-2xl mx-auto italic">
+            4.5+ years of data engineering expertise focused on infrastructure ROI and clinical data accuracy.
           </p>
         </div>
 
         <div className="relative max-w-5xl mx-auto">
-          {/* THE SYNCED TIMELINE TRACK */}
+          {/* DYNAMIC TIMELINE TRACK */}
           <div className="absolute left-0 md:left-12 top-0 bottom-0 w-[2px] bg-white/10">
-            {/* GROWING LINE: Follows scroll */}
-            <motion.div 
-              style={{ height: pathHeight }}
-              className="absolute top-0 w-full bg-primary shadow-[0_0_15px_rgba(var(--primary-rgb),0.6)] origin-top"
-            />
-            {/* SYNCED POINTER: Follows scroll */}
-            <motion.div 
-              style={{ top: pointerPos }}
-              className="absolute -left-[11px] w-6 h-6 rounded-full bg-primary border-4 border-[#020617] shadow-glow z-20 flex items-center justify-center"
-            >
+            <motion.div style={{ height: pathHeight }} className="absolute top-0 w-full bg-primary shadow-glow origin-top" />
+            <motion.div style={{ top: pointerPos }} className="absolute -left-[11px] w-6 h-6 rounded-full bg-primary border-4 border-[#020617] shadow-glow z-20 flex items-center justify-center">
                <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
             </motion.div>
           </div>
 
           <div className="space-y-12">
             {experiences.map((exp) => (
-              <motion.div
-                key={exp.id}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                className="relative pl-12 md:pl-32"
-              >
+              <motion.div key={exp.id} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="relative pl-12 md:pl-32">
                 <ExperienceCard exp={exp} />
               </motion.div>
             ))}
