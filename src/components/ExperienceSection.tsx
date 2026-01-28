@@ -1,12 +1,12 @@
 /**
  * EXPERIENCE SECTION - Professional Timeline
  * ===========================================
- * Featuring Sticky Scroll Timeline, Hover-Animated Skills, and Unified Flip Cards.
+ * Fixed: Scrolling Line + Pointer, Responsibility rendering, and tight spacing.
  */
 
 import { useState, useRef } from "react";
 import { motion, useScroll, useSpring, useTransform } from "framer-motion";
-import { Calendar, Building2, ArrowRight, RotateCcw, PenTool } from "lucide-react";
+import { Calendar, Building2, RotateCcw, PenTool } from "lucide-react";
 
 const experiences = [
   {
@@ -54,7 +54,7 @@ const ExperienceCard = ({ exp }) => {
 
   return (
     <div 
-      className="relative min-h-[580px] w-full cursor-pointer group mb-12"
+      className="relative min-h-[520px] w-full cursor-pointer group"
       style={{ perspective: "2000px" }}
       onClick={() => setIsFlipped(!isFlipped)}
     >
@@ -62,50 +62,50 @@ const ExperienceCard = ({ exp }) => {
         className="w-full h-full relative"
         initial={false}
         animate={{ rotateY: isFlipped ? 180 : 0 }}
-        transition={{ duration: 0.8, type: "spring", stiffness: 100, damping: 22 }}
+        transition={{ duration: 0.8, type: "spring", stiffness: 100, damping: 20 }}
         style={{ transformStyle: "preserve-3d" }}
       >
         {/* FRONT SIDE */}
         <div 
-          className={`absolute inset-0 w-full h-full bg-card border rounded-3xl p-8 flex flex-col shadow-2xl transition-all duration-500 ${exp.type === 'current' ? 'border-primary/40 shadow-glow' : 'border-border'}`}
+          className={`absolute inset-0 w-full h-full bg-[#0a0f1a] border rounded-3xl p-8 flex flex-col shadow-2xl ${exp.type === 'current' ? 'border-primary/40' : 'border-border'}`}
           style={{ backfaceVisibility: "hidden" }}
         >
           {exp.type === 'current' && (
-            <div className="bg-primary/20 text-primary px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest w-fit mb-6 border border-primary/30">
+            <div className="bg-primary/20 text-primary px-4 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest w-fit mb-4 border border-primary/30">
               Current Role
             </div>
           )}
 
-          <div className="flex items-center gap-2 text-muted-foreground mb-4 font-mono text-sm">
-            <Calendar className="w-4 h-4 text-primary" />
+          <div className="flex items-center gap-2 text-muted-foreground mb-2 font-mono text-xs">
+            <Calendar className="w-3.5 h-3.5 text-primary" />
             {exp.period}
           </div>
 
-          <h3 className="text-3xl font-bold text-foreground mb-2 tracking-tight group-hover:text-primary transition-colors">
+          <h3 className="text-2xl font-bold text-foreground mb-1 group-hover:text-primary transition-colors">
             {exp.role}
           </h3>
           
-          <div className="flex items-center gap-2 text-primary/80 font-medium mb-8">
-            <Building2 className="w-5 h-5" />
+          <div className="flex items-center gap-2 text-primary font-medium mb-6">
+            <Building2 className="w-4 h-4" />
             {exp.company}
           </div>
 
-          <div className="space-y-8 flex-grow">
+          <div className="space-y-6 flex-grow">
             <div>
-              <h4 className="text-xs font-mono text-primary uppercase tracking-tighter mb-3">Description:</h4>
-              <p className="text-muted-foreground leading-relaxed italic border-l-2 border-primary/20 pl-4 text-sm">
+              <h4 className="text-[10px] font-mono text-primary uppercase tracking-wider mb-2">Description:</h4>
+              <p className="text-muted-foreground leading-relaxed text-sm italic border-l-2 border-primary/20 pl-4">
                 {exp.description}
               </p>
             </div>
 
             <div>
-              <h4 className="text-xs font-mono text-primary uppercase tracking-tighter mb-4">Tools Used:</h4>
+              <h4 className="text-[10px] font-mono text-primary uppercase tracking-wider mb-3">Tools Used:</h4>
               <div className="flex flex-wrap gap-2">
                 {exp.skills.map((skill) => (
                   <motion.span 
                     key={skill}
-                    whileHover={{ scale: 1.1, backgroundColor: "rgba(var(--primary-rgb), 0.15)", borderColor: "rgba(var(--primary-rgb), 0.4)" }}
-                    className="px-3 py-1.5 bg-secondary/40 text-secondary-foreground text-[10px] font-medium rounded-xl border border-border transition-all cursor-default"
+                    whileHover={{ scale: 1.05, backgroundColor: "rgba(var(--primary-rgb), 0.1)" }}
+                    className="px-2.5 py-1 bg-secondary/30 text-secondary-foreground text-[10px] rounded-lg border border-border"
                   >
                     {skill}
                   </motion.span>
@@ -114,42 +114,40 @@ const ExperienceCard = ({ exp }) => {
             </div>
           </div>
 
-          <div className="mt-auto pt-6 border-t border-border flex items-center justify-between text-primary font-mono text-[10px] uppercase tracking-widest group-hover:translate-x-1 transition-transform">
-            <span>Click to view Responsibilities & Results</span>
+          <div className="mt-6 pt-4 border-t border-border flex items-center justify-between text-primary font-mono text-[10px] uppercase tracking-widest">
+            <span>Click to view responsibilities & results</span>
             <RotateCcw className="w-4 h-4 animate-spin-slow" />
           </div>
         </div>
 
         {/* BACK SIDE */}
         <div 
-          className="absolute inset-0 w-full h-full bg-card border border-primary/40 rounded-3xl p-8 flex flex-col overflow-hidden shadow-glow"
+          className="absolute inset-0 w-full h-full bg-[#0a0f1a] border border-primary/40 rounded-3xl p-8 flex flex-col shadow-glow"
           style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
         >
-          <div className="mb-6 flex items-center justify-between border-b border-border pb-4">
-            <h3 className="text-lg font-bold text-primary tracking-widest uppercase">Responsibilities</h3>
-            <span className="text-[9px] font-mono text-muted-foreground uppercase">Data & Outcomes</span>
+          <div className="mb-4 flex items-center justify-between border-b border-border pb-3">
+            <h3 className="text-sm font-bold text-primary tracking-widest uppercase">Responsibilities</h3>
+            <span className="text-[9px] font-mono text-muted-foreground">Data & Outcomes</span>
           </div>
 
-          <ul className="space-y-4 overflow-y-auto pr-4 custom-scrollbar flex-grow">
+          <ul className="space-y-3 overflow-y-auto pr-2 flex-grow custom-scrollbar">
             {exp.responsibilities.map((point, i) => (
-              <li key={i} className="text-[12px] text-muted-foreground flex gap-4 leading-relaxed group/item">
-                <span className="text-primary mt-1.5 h-1.5 w-1.5 rounded-full bg-primary shrink-0 shadow-glow" />
-                <span className="group-hover/item:text-foreground transition-colors">{point}</span>
+              <li key={i} className="text-[12px] text-muted-foreground flex gap-3 leading-relaxed">
+                <span className="text-primary mt-1.5 h-1 w-1 rounded-full bg-primary shrink-0 shadow-glow" />
+                <span>{point}</span>
               </li>
             ))}
           </ul>
           
-          <div className="mt-8 pt-4 border-t border-border flex items-center justify-center gap-2">
-            <PenTool className="w-3 h-3 text-primary" />
-            <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest">Click to return to overview</span>
+          <div className="mt-4 pt-4 border-t border-border flex items-center justify-center gap-2 text-muted-foreground">
+            <PenTool className="w-3 h-3" />
+            <span className="text-[9px] font-mono uppercase tracking-widest">Click to return</span>
           </div>
         </div>
       </motion.div>
     </div>
   );
 };
-
-
 
 const ExperienceSection = () => {
   const containerRef = useRef(null);
@@ -159,55 +157,46 @@ const ExperienceSection = () => {
   });
 
   const scrollSpring = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
-  const pointerY = useTransform(scrollSpring, [0, 1], ["0%", "100%"]);
+  
+  // Transform the progress into height for the line and position for the pointer
+  const pathHeight = useTransform(scrollSpring, [0, 1], ["0%", "100%"]);
+  const pointerPos = useTransform(scrollSpring, [0, 1], ["0%", "100%"]);
 
   return (
-    <section id="experience" ref={containerRef} className="section-padding relative bg-background min-h-screen">
-      <div className="absolute inset-0 -z-10 tech-grid opacity-10" />
-      
+    <section id="experience" ref={containerRef} className="py-20 relative bg-[#020617]">
       <div className="container mx-auto px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-24"
-        >
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/20 rounded-full mb-6 text-primary">
-            <Building2 className="w-4 h-4" />
-            <span className="font-body text-xs uppercase tracking-widest">Professional Path</span>
-          </div>
-          <h2 className="text-5xl md:text-6xl font-bold text-foreground mb-6 tracking-tighter">
-            Experience <span className="text-primary italic text-shadow-glow">Portfolio</span>
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4 tracking-tight">
+            Professional <span className="text-primary italic">Experience</span>
           </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-            Synthesizing 4.5+ years of data engineering and analytics expertise to resolve complex infrastructure challenges.
-          </p>
-        </motion.div>
+        </div>
 
-        <div className="relative max-w-5xl mx-auto">
-          {/* STICKY TIMELINE TRACKER */}
-          <div className="absolute left-0 md:left-12 top-0 bottom-0 w-[2px] bg-border/20">
+        <div className="relative max-w-4xl mx-auto">
+          {/* THE DYNAMIC TIMELINE TRACK */}
+          <div className="absolute left-0 md:left-8 top-0 bottom-0 w-[2px] bg-white/5">
+            {/* THE FLOWING LINE */}
             <motion.div 
-              style={{ height: pointerY }}
-              className="absolute top-0 w-full bg-primary shadow-glow origin-top"
+              style={{ height: pathHeight }}
+              className="absolute top-0 w-full bg-primary shadow-[0_0_15px_rgba(var(--primary-rgb),0.5)] origin-top"
             />
-            {/* THE STICKY POINTER */}
+            {/* THE GLIDING POINTER */}
             <motion.div 
-              style={{ top: pointerY }}
-              className="sticky top-1/2 -ml-[11px] w-6 h-6 rounded-full bg-primary border-4 border-background shadow-glow z-20 flex items-center justify-center"
+              style={{ top: pointerPos }}
+              className="absolute -left-[11px] w-6 h-6 rounded-full bg-primary border-4 border-[#020617] shadow-glow z-20 flex items-center justify-center"
             >
-               <div className="w-1.5 h-1.5 bg-background rounded-full animate-pulse" />
+               <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
             </motion.div>
           </div>
 
-          <div className="space-y-24">
-            {experiences.map((exp, index) => (
+          {/* CARDS CONTAINER - Reduced space-y from 24 to 12 */}
+          <div className="space-y-12">
+            {experiences.map((exp) => (
               <motion.div
                 key={exp.id}
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                className="relative pl-12 md:pl-32"
+                viewport={{ once: true, margin: "-50px" }}
+                className="relative pl-12 md:pl-24"
               >
                 <ExperienceCard exp={exp} />
               </motion.div>
