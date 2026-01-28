@@ -84,7 +84,7 @@ const ExperienceCard = ({ exp }: { exp: any }) => {
           </div>
 
           <div className="w-full pt-4 border-t border-white/5 flex items-center justify-between text-primary font-mono text-[10px] uppercase tracking-widest group-hover:text-white transition-colors">
-            <span>Click for Strategic Outcomes</span>
+            <span>Click for Impact & Outcomes</span>
             <RotateCcw className="w-4 h-4 group-hover:rotate-180 transition-transform duration-500" />
           </div>
         </div>
@@ -100,8 +100,8 @@ const ExperienceCard = ({ exp }: { exp: any }) => {
         >
           <div className="flex justify-between items-center border-b border-white/10 pb-4 mb-5">
             <div>
-              <h3 className="text-sm font-bold text-primary tracking-widest uppercase">Strategic Impact & Deliverables</h3>
-              <p className="text-[9px] text-muted-foreground font-mono mt-1 uppercase">Core Contributions & Business Value</p>
+              <h3 className="text-sm font-bold text-primary tracking-widest uppercase">RESPONSIBILITIES</h3>
+              <p className="text-[9px] text-muted-foreground font-mono mt-1 uppercase">Core Contributions & Business Outcomes</p>
             </div>
             <CheckCircle2 className="w-5 h-5 text-primary" />
           </div>
@@ -143,7 +143,7 @@ const ExperienceSection = () => {
             Professional <span className="italic">Experience</span>
           </h2>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto italic">
-            4.5+ years of data engineering expertise focused on infrastructure ROI and high-scale data accuracy. [cite: 2026-01-12]
+            4.5+ years of data engineering expertise focused on infrastructure ROI and high-scale data accuracy.
           </p>
         </div>
 
