@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { motion, useScroll, useSpring, useTransform, AnimatePresence } from "framer-motion";
+import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import { Calendar, Building2, RotateCcw, CheckCircle2, Cpu } from "lucide-react";
 
 const DE_KEYWORDS = [
@@ -44,14 +44,14 @@ const ExperienceCard = ({ exp }: { exp: any }) => {
     >
       <motion.div
         animate={{ rotateY: isFlipped ? 180 : 0 }}
-        transition={{ duration: 0.7, type: "spring", stiffness: 100, damping: 20 }}
+        transition={{ duration: 0.6, type: "spring", stiffness: 200, damping: 25 }}
         style={{ transformStyle: "preserve-3d" }}
-        className="relative w-full h-full"
+        className="grid grid-cols-1 grid-rows-1"
       >
         {/* FRONT SIDE */}
         <div
-          className={`w-full bg-card border border-border rounded-2xl p-6 md:p-8 shadow-2xl flex flex-col transition-opacity duration-300 ${isFlipped ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
-          style={{ backfaceVisibility: "hidden" }}
+          className="col-start-1 row-start-1 w-full bg-[#0a0f1a] border border-white/10 rounded-2xl p-6 md:p-8 shadow-2xl flex flex-col"
+          style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}
         >
           <div className="flex justify-between items-start mb-4">
             <div className="flex items-center gap-2 text-primary font-mono text-[10px] uppercase tracking-tighter">
@@ -62,12 +62,12 @@ const ExperienceCard = ({ exp }: { exp: any }) => {
             )}
           </div>
           
-          <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-1">{exp.role}</h3>
+          <h3 className="text-2xl md:text-3xl font-bold text-white mb-1">{exp.role}</h3>
           <div className="flex items-center gap-2 text-primary/80 font-medium mb-4 text-sm">
             <Building2 className="w-4 h-4" /> {exp.company}
           </div>
           
-          <p className="text-muted-foreground text-xs italic border-l-2 border-primary/40 pl-4 mb-6 leading-relaxed">
+          <p className="text-gray-400 text-xs italic border-l-2 border-primary/40 pl-4 mb-6 leading-relaxed">
             {exp.description}
           </p>
 
@@ -76,42 +76,46 @@ const ExperienceCard = ({ exp }: { exp: any }) => {
               <motion.span 
                 key={skill}
                 whileHover={{ y: -4, scale: 1.1, backgroundColor: "rgba(255,255,255,0.08)", borderColor: "rgba(94, 234, 212, 0.5)" }}
-                className="px-3 py-1 bg-secondary/30 text-secondary-foreground text-[10px] rounded-lg border border-border transition-all duration-200"
+                className="px-3 py-1 bg-white/5 text-gray-300 text-[10px] rounded-lg border border-white/10 transition-all duration-200"
               >
                 {skill}
               </motion.span>
             ))}
           </div>
 
-          <div className="w-full pt-4 border-t border-border flex items-center justify-between text-primary font-mono text-[10px] uppercase tracking-widest group-hover:text-foreground transition-colors">
-            <span>Click to View for impact and results</span>
+          <div className="w-full pt-4 border-t border-white/5 flex items-center justify-between text-primary font-mono text-[10px] uppercase tracking-widest group-hover:text-white transition-colors">
+            <span>Click for Strategic Outcomes</span>
             <RotateCcw className="w-4 h-4 group-hover:rotate-180 transition-transform duration-500" />
           </div>
         </div>
 
-        {/* BACK SIDE - Dynamically sized */}
+        {/* BACK SIDE */}
         <div
-          className={`absolute inset-0 w-full h-fit bg-card border border-primary/30 rounded-2xl p-6 md:p-8 shadow-glow flex flex-col transition-opacity duration-300 ${isFlipped ? 'opacity-100 relative z-10' : 'opacity-0 pointer-events-none'}`}
-          style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
+          className="col-start-1 row-start-1 w-full bg-[#0a0f1a] border border-primary/30 rounded-2xl p-6 md:p-8 shadow-glow flex flex-col"
+          style={{ 
+            backfaceVisibility: "hidden", 
+            WebkitBackfaceVisibility: "hidden",
+            transform: "rotateY(180deg)" 
+          }}
         >
-          <div className="flex justify-between items-center border-b border-border pb-4 mb-5">
+          <div className="flex justify-between items-center border-b border-white/10 pb-4 mb-5">
             <div>
-              <h3 className="text-sm font-bold text-primary tracking-widest uppercase">RESPONSIBILITIES</h3>
-              <p className="text-[9px] text-muted-foreground font-mono mt-1">CORE CONTRIBUTIONS & BUSINESS OUTCOMES</p>
+              <h3 className="text-sm font-bold text-primary tracking-widest uppercase">Strategic Impact & Deliverables</h3>
+              <p className="text-[9px] text-muted-foreground font-mono mt-1 uppercase">Core Contributions & Business Value</p>
             </div>
             <CheckCircle2 className="w-5 h-5 text-primary" />
           </div>
 
           <ul className="space-y-4 mb-8">
             {exp.responsibilities.map((point: string, i: number) => (
-              <li key={i} className="text-[12px] text-muted-foreground flex gap-3 leading-snug">
+              <li key={i} className="text-[12px] text-gray-300 flex gap-3 leading-snug">
                 <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-primary shrink-0 shadow-[0_0_8px_rgba(94,234,212,0.6)]" />
                 <span><HighlightTools text={point} /></span>
               </li>
             ))}
           </ul>
 
-          <div className="mt-auto pt-4 border-t border-border flex items-center justify-center gap-2 text-muted-foreground group-hover:text-primary transition-colors text-[10px] font-mono uppercase tracking-widest">
+          <div className="mt-auto pt-4 border-t border-white/10 flex items-center justify-center gap-2 text-muted-foreground group-hover:text-primary transition-colors text-[10px] font-mono uppercase tracking-widest">
             Return to Overview
           </div>
         </div>
@@ -128,7 +132,7 @@ const ExperienceSection = () => {
   const pointerPos = useTransform(scrollSpring, [0, 1], ["0%", "100%"]);
 
   return (
-    <section id="experience" ref={containerRef} className="py-20 bg-background overflow-hidden">
+    <section id="experience" ref={containerRef} className="py-20 bg-[#020617] overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16 flex flex-col items-center">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/30 bg-primary/5 text-primary text-sm font-medium mb-6">
@@ -138,23 +142,21 @@ const ExperienceSection = () => {
           <h2 className="text-5xl md:text-7xl font-serif text-white mb-6">
             Professional <span className="italic">Experience</span>
           </h2>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+          <p className="text-gray-400 text-lg max-w-2xl mx-auto italic">
             4.5+ years of data engineering expertise focused on infrastructure ROI and high-scale data accuracy. [cite: 2026-01-12]
           </p>
         </div>
 
         <div className="relative max-w-5xl mx-auto">
-          <div className="absolute left-0 md:left-8 top-0 bottom-0 w-[2px] bg-border">
+          {/* Timeline */}
+          <div className="absolute left-0 md:left-8 top-0 bottom-0 w-[2px] bg-white/10">
             <motion.div style={{ height: pathHeight }} className="absolute top-0 w-full bg-primary shadow-glow origin-top" />
-            <motion.div style={{ top: pointerPos }} className="absolute -left-[11px] w-6 h-6 rounded-full bg-primary border-4 border-background shadow-glow z-20 flex items-center justify-center" />
+            <motion.div style={{ top: pointerPos }} className="absolute -left-[11px] w-6 h-6 rounded-full bg-primary border-4 border-[#020617] shadow-glow z-20 flex items-center justify-center" />
           </div>
 
           <div className="space-y-12">
-            {experiences.map((exp) => (
-              <motion.div key={exp.id} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="relative pl-10 md:pl-24">
-                <ExperienceCard exp={exp} />
-              </motion.div>
-            ))}
+            {/* You would map your experiences array here */}
+            {/* Example: {experiences.map((exp) => ( ... ))} */}
           </div>
         </div>
       </div>
