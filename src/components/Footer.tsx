@@ -1,14 +1,14 @@
 /**
- * FOOTER - Simple and Clean
- * ==========================
+ * FOOTER - Apple-Inspired Minimal
+ * ================================
+ * Clean, simple, elegant footer.
  */
 
 import { motion } from "framer-motion";
-import { Database, Heart } from "lucide-react";
 
 const Footer = () => {
   return (
-    <footer className="py-8 px-6 border-t border-border bg-card/50">
+    <footer className="py-12 px-6 border-t border-border/50">
       <div className="container mx-auto">
         <motion.div
           initial={{ opacity: 0 }}
@@ -17,21 +17,18 @@ const Footer = () => {
           className="flex flex-col md:flex-row items-center justify-between gap-4"
         >
           {/* Logo */}
-          <div className="flex items-center gap-2">
-            <Database className="w-5 h-5 text-primary" />
-            <span className="font-heading text-lg font-semibold text-foreground">
-              Dharani Majji
-            </span>
-          </div>
+          <span className="font-heading text-lg font-semibold text-foreground">
+            Dharani Majji
+          </span>
 
           {/* Copyright */}
-          <p className="font-body text-sm text-muted-foreground flex items-center gap-1">
-            Built with <Heart className="w-4 h-4 text-primary" /> and lots of data
-          </p>
-
-          {/* Year */}
           <p className="font-body text-sm text-muted-foreground">
             © {new Date().getFullYear()} All rights reserved
+          </p>
+
+          {/* Built with */}
+          <p className="font-body text-sm text-muted-foreground/60">
+            Crafted with precision
           </p>
         </motion.div>
       </div>
