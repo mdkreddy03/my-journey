@@ -1,28 +1,15 @@
 /**
- * SKILLS SECTION - Apple-Inspired 5-Tile Grid
+ * SKILLS SECTION - Apple-Inspired 3+2 Tile Grid with Enhanced Motion
  * ========================================================
- * Clean, boxed design with all tools integrated into tiles.
+ * Features: 3D Hover Tilt, Spring Click, and Staggered Tool Entry.
  */
 
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { 
-  Database, 
-  BarChart3, 
-  Workflow, 
-  Cloud, 
-  Code2, 
-  GitBranch,
-  Layers,
-  Cpu,
-  LineChart,
-  Table2,
-  Boxes,
-  Zap,
-  Terminal,
-  Server,
-  ShieldCheck,
-  Search
+  Database, BarChart3, Workflow, Cloud, Code2, GitBranch,
+  Layers, Cpu, LineChart, Table2, Boxes, Zap, Terminal,
+  Server, ShieldCheck, Search
 } from "lucide-react";
 
 const skillCategories = [
@@ -138,48 +125,56 @@ const SkillsSection = () => {
           </p>
         </motion.div>
 
-        {/* Skills cards grid - Responsive 1 to 5 columns */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+        {/* 3+2 Grid Layout */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-8">
           {skillCategories.map((category, index) => (
             <motion.div
               key={category.title}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true, margin: "-50px" }}
-              transition={{ 
-                duration: 0.6, 
-                delay: index * 0.1,
-                ease: [0.16, 1, 0.3, 1] 
-              }}
-              className="group"
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className={`group ${index < 3 ? 'lg:col-span-2' : 'lg:col-span-3'}`}
             >
               <motion.div 
-                whileHover={{ y: -8, transition: { duration: 0.3 } }}
-                className="h-full glass rounded-3xl p-6 glow-border flex flex-col"
+                // --- HOVER & CLICK ANIMATIONS ---
+                whileHover={{ 
+                  y: -10,
+                  rotateX: 2, 
+                  rotateY: -2,
+                  transition: { type: "spring", stiffness: 300 } 
+                }}
+                whileTap={{ scale: 0.97 }}
+                className="h-full glass rounded-[2.5rem] p-8 glow-border flex flex-col cursor-pointer perspective-1000"
               >
-                {/* Icon */}
-                <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${category.gradient} flex items-center justify-center mb-5`}>
-                  <category.icon className="w-6 h-6 text-foreground" />
-                </div>
+                {/* Floating Icon Animation */}
+                <motion.div 
+                  whileHover={{ rotate: 15, scale: 1.1 }}
+                  className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${category.gradient} flex items-center justify-center mb-6 shadow-lg shadow-black/20`}
+                >
+                  <category.icon className="w-8 h-8 text-foreground" />
+                </motion.div>
 
-                {/* Title & description */}
-                <h3 className="font-heading text-xl font-semibold text-foreground mb-2">
+                <h3 className="font-heading text-2xl font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
                   {category.title}
                 </h3>
-                <p className="font-body text-xs text-muted-foreground mb-6 leading-relaxed">
+                <p className="font-body text-sm text-muted-foreground mb-8 leading-relaxed">
                   {category.description}
                 </p>
 
-                {/* Skills List (Boxed items) */}
-                <div className="space-y-2 mt-auto">
-                  {category.skills.map((skill) => (
+                {/* Staggered Skills Grid */}
+                <div className="grid grid-cols-2 gap-3 mt-auto">
+                  {category.skills.map((skill, sIdx) => (
                     <motion.div
                       key={skill.name}
-                      whileHover={{ scale: 1.02, x: 4 }}
-                      className="flex items-center gap-2.5 p-2 bg-white/5 rounded-xl border border-white/5 group/skill cursor-default"
+                      initial={{ opacity: 0, x: -10 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ delay: (index * 0.1) + (sIdx * 0.05) }}
+                      whileHover={{ scale: 1.05, backgroundColor: "rgba(255,255,255,0.1)" }}
+                      className="flex items-center gap-2.5 p-3 bg-white/5 rounded-xl border border-white/5 group/skill"
                     >
-                      <skill.icon className="w-3.5 h-3.5 text-muted-foreground group-hover/skill:text-primary transition-colors" />
-                      <span className="font-body text-xs text-foreground/80">{skill.name}</span>
+                      <skill.icon className="w-4 h-4 text-muted-foreground group-hover/skill:text-primary transition-colors" />
+                      <span className="font-body text-sm text-foreground/80 group-hover/skill:text-white">{skill.name}</span>
                     </motion.div>
                   ))}
                 </div>
