@@ -1,12 +1,12 @@
 import { useState, useRef } from "react";
 import { motion, useScroll, useSpring, useTransform } from "framer-motion";
-import { Calendar, Building2, RotateCcw, CheckCircle2, Cpu } from "lucide-react";
+import { Calendar, Building2, RotateCcw, CheckCircle2 } from "lucide-react";
 
 const DE_KEYWORDS = [
   "Azure Data Factory", "Databricks", "PySpark", "Snowflake", "SQL", "Airflow", "Power BI", "Python", 
   "dbt", "Azure Synapse", "BigQuery", "Docker", "PostgreSQL", "Apache Spark", "Looker", "GitHub Actions",
   "ETL", "ELT", "Lakehouse", "Real-time", "Streaming", "HIPAA", "Row-Level Security", "RLS", 
-  "Partitioning", "Star-schema", "CI/CD", "Forecasting", "Telemetry", "Data Pipeline", "Cloud", "Great Expectations"
+  "Partitioning", "Star-schema", "CI/CD", "Forecasting", "Telemetry", "Data Pipeline", "Cloud"
 ];
 
 const experiences = [
@@ -74,90 +74,102 @@ const HighlightTools = ({ text }: { text: string }) => {
   return <>{parts}</>;
 };
 
-const ExperienceCard = ({ exp }: { exp: any }) => {
+interface Experience {
+  id: number;
+  role: string;
+  company: string;
+  period: string;
+  description: string;
+  skills: string[];
+  type: string;
+  responsibilities: string[];
+}
+
+const ExperienceCard = ({ exp }: { exp: Experience }) => {
   const [isFlipped, setIsFlipped] = useState(false);
 
   return (
-    <div 
-      className="relative w-full cursor-pointer group" 
-      style={{ perspective: "2000px" }}
-      onClick={() => setIsFlipped(!isFlipped)}
-    >
+    <div className="relative w-full group" style={{ perspective: "1500px" }}>
       <motion.div
         animate={{ rotateY: isFlipped ? 180 : 0 }}
-        transition={{ duration: 0.6, type: "spring", stiffness: 200, damping: 25 }}
+        transition={{ duration: 0.6, type: "spring", stiffness: 260, damping: 20 }}
         style={{ transformStyle: "preserve-3d" }}
-        className="grid grid-cols-1 grid-rows-1"
+        className="relative w-full"
       >
         {/* FRONT SIDE */}
         <div
-          className={`col-start-1 row-start-1 w-full bg-[#0a0f1a] border border-white/10 rounded-2xl p-6 md:p-8 shadow-2xl flex flex-col transition-all duration-300 ${isFlipped ? 'opacity-0 invisible' : 'opacity-100 visible'}`}
-          style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}
+          className="w-full bg-card border border-border rounded-2xl p-6 md:p-8 shadow-2xl flex flex-col"
+          style={{ backfaceVisibility: "hidden" }}
         >
           <div className="flex justify-between items-start mb-4">
-            <div className="flex items-center gap-2 text-cyan-400 font-mono text-[10px] uppercase tracking-tighter">
+            <div className="flex items-center gap-2 text-primary font-mono text-[10px] uppercase tracking-tighter">
               <Calendar className="w-3 h-3" /> {exp.period}
             </div>
             {exp.type === 'current' && (
-              <span className="text-[9px] font-bold text-cyan-400 border border-cyan-400/30 px-2 py-0.5 rounded-full bg-cyan-400/10">CURRENT ROLE</span>
+              <span className="text-[9px] font-bold text-primary border border-primary/30 px-2 py-0.5 rounded-full bg-primary/10">CURRENT</span>
             )}
           </div>
           
-          <h3 className="text-2xl md:text-3xl font-bold text-white mb-1">{exp.role}</h3>
-          <div className="flex items-center gap-2 text-cyan-400/80 font-medium mb-4 text-sm">
+          <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-1">{exp.role}</h3>
+          <div className="flex items-center gap-2 text-primary/80 font-medium mb-4 text-sm">
             <Building2 className="w-4 h-4" /> {exp.company}
           </div>
           
-          <p className="text-gray-400 text-xs italic border-l-2 border-cyan-400/40 pl-4 mb-6 leading-relaxed">
+          <p className="text-muted-foreground text-xs italic border-l-2 border-primary/40 pl-4 mb-6 leading-relaxed">
             {exp.description}
           </p>
 
           <div className="flex flex-wrap gap-2 mb-8">
             {exp.skills.map((skill: string) => (
-              <span 
+              <motion.span 
                 key={skill}
-                className="px-3 py-1 bg-white/5 text-gray-300 text-[10px] rounded-lg border border-white/10"
+                whileHover={{ y: -4, scale: 1.1, backgroundColor: "rgba(255,255,255,0.08)", borderColor: "rgba(94, 234, 212, 0.5)" }}
+                className="px-3 py-1 bg-secondary/30 text-secondary-foreground text-[10px] rounded-lg border border-border cursor-default transition-all duration-200"
               >
                 {skill}
-              </span>
+              </motion.span>
             ))}
           </div>
 
-          <div className="w-full pt-4 border-t border-white/5 flex items-center justify-between text-cyan-400 font-mono text-[10px] uppercase tracking-widest group-hover:text-white transition-colors">
-            <span>Click for Impact & Outcomes</span>
+          <button 
+            onClick={() => setIsFlipped(true)}
+            className="w-full pt-4 border-t border-border flex items-center justify-between text-primary font-mono text-[10px] uppercase tracking-widest hover:text-foreground transition-colors"
+          >
+            <span>View Strategic Outcomes</span>
             <RotateCcw className="w-4 h-4 group-hover:rotate-180 transition-transform duration-500" />
-          </div>
+          </button>
         </div>
 
         {/* BACK SIDE */}
         <div
-          className={`col-start-1 row-start-1 w-full bg-[#0a0f1a] border border-cyan-400/30 rounded-2xl p-6 md:p-8 shadow-[0_0_20px_rgba(34,211,238,0.1)] flex flex-col transition-all duration-300 ${isFlipped ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
-          style={{ 
-            backfaceVisibility: "hidden", 
-            WebkitBackfaceVisibility: "hidden",
-            transform: "rotateY(180deg)" 
-          }}
+          className="absolute inset-0 w-full h-full bg-card border border-primary/30 rounded-2xl p-6 md:p-8 shadow-glow flex flex-col"
+          style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
         >
-          <div className="flex justify-between items-center border-b border-white/10 pb-4 mb-5">
+          <div className="flex justify-between items-center border-b border-border pb-4 mb-5">
             <div>
-              <h3 className="text-sm font-bold text-cyan-400 tracking-widest uppercase">RESPONSIBILITIES</h3>
-              <p className="text-[9px] text-gray-500 font-mono mt-1 uppercase">Core Contributions & Business Outcomes</p>
+              <h3 className="text-sm font-bold text-primary tracking-widest uppercase">Strategic Impact & Deliverables</h3>
+              <p className="text-[9px] text-muted-foreground font-mono mt-1">CORE CONTRIBUTIONS & BUSINESS VALUE</p>
             </div>
-            <CheckCircle2 className="w-5 h-5 text-cyan-400" />
+            <CheckCircle2 className="w-5 h-5 text-primary" />
           </div>
 
-          <ul className="space-y-4 mb-8">
-            {exp.responsibilities.map((point: string, i: number) => (
-              <li key={i} className="text-[12px] text-gray-300 flex gap-3 leading-snug">
-                <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-cyan-400 shrink-0 shadow-[0_0_8px_rgba(34,211,238,0.6)]" />
-                <span><HighlightTools text={point} /></span>
-              </li>
-            ))}
-          </ul>
+          <div className="overflow-y-auto flex-grow custom-scrollbar pr-2">
+            <ul className="space-y-3.5">
+              {exp.responsibilities.map((point: string, i: number) => (
+                <li key={i} className="text-[12px] text-muted-foreground flex gap-3 leading-snug">
+                  <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-primary shrink-0 shadow-[0_0_8px_rgba(94,234,212,0.6)]" />
+                  <span><HighlightTools text={point} /></span>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-          <div className="mt-auto pt-4 border-t border-white/10 flex items-center justify-center gap-2 text-gray-500 group-hover:text-cyan-400 transition-colors text-[10px] font-mono uppercase tracking-widest">
+          <button 
+            onClick={() => setIsFlipped(false)}
+            className="mt-6 pt-4 border-t border-border flex items-center justify-center gap-2 text-muted-foreground hover:text-primary transition-colors text-[10px] font-mono uppercase tracking-widest"
+          >
             Return to Overview
-          </div>
+          </button>
         </div>
       </motion.div>
     </div>
@@ -166,34 +178,40 @@ const ExperienceCard = ({ exp }: { exp: any }) => {
 
 const ExperienceSection = () => {
   const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start center", "end center"] });
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start center", "end center"]
+  });
+
   const scrollSpring = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
   const pathHeight = useTransform(scrollSpring, [0, 1], ["0%", "100%"]);
   const pointerPos = useTransform(scrollSpring, [0, 1], ["0%", "100%"]);
 
   return (
-    <section id="experience" ref={containerRef} className="py-20 bg-[#020617] overflow-hidden">
+    <section id="experience" ref={containerRef} className="py-20 bg-background overflow-hidden">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16 flex flex-col items-center">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-cyan-400/30 bg-cyan-400/5 text-cyan-400 text-sm font-medium mb-6">
-            <Cpu className="w-4 h-4 text-cyan-400" />
-            <span>Professional Career</span>
-          </div>
-          <h2 className="text-5xl md:text-7xl font-serif text-white mb-6">
-            Professional <span className="italic">Experience</span>
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-6xl font-bold text-foreground mb-4 tracking-tighter">
+            Professional <span className="text-primary italic">Experience</span>
           </h2>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto italic">
-            Data Engineer ⫸ 4.5+ Yrs Experience | Optimizing Data Infra for Accuracy & Cost-Efficiency | Spark, Airflow, AWS
+          <p className="text-muted-foreground max-w-2xl mx-auto italic">
+            4.5+ years of data engineering expertise focused on infrastructure ROI and clinical data accuracy.
           </p>
         </div>
 
         <div className="relative max-w-5xl mx-auto">
-          <div className="absolute left-0 md:left-8 top-0 bottom-0 w-[2px] bg-white/10">
-            <motion.div style={{ height: pathHeight }} className="absolute top-0 w-full bg-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.5)] origin-top" />
-            <motion.div style={{ top: pointerPos }} className="absolute -left-[11px] w-6 h-6 rounded-full bg-cyan-400 border-4 border-[#020617] shadow-[0_0_15px_rgba(34,211,238,0.5)] z-20 flex items-center justify-center" />
+          {/* Timeline Track */}
+          <div className="absolute left-0 md:left-8 top-0 bottom-0 w-[2px] bg-border">
+            <motion.div style={{ height: pathHeight }} className="absolute top-0 w-full bg-primary shadow-glow origin-top" />
+            <motion.div 
+              style={{ top: pointerPos }} 
+              className="absolute -left-[11px] w-6 h-6 rounded-full bg-primary border-4 border-background shadow-glow z-20 flex items-center justify-center"
+            >
+              <div className="w-1.5 h-1.5 bg-foreground rounded-full animate-pulse" />
+            </motion.div>
           </div>
 
-          <div className="space-y-12">
+          <div className="space-y-8">
             {experiences.map((exp) => (
               <motion.div 
                 key={exp.id} 
