@@ -1,12 +1,12 @@
 /**
  * EXPERIENCE SECTION - Apple-Inspired Timeline
  * =============================================
- * Smooth scroll animations, elegant flip cards, minimal design.
+ * Smooth scroll animations, 3D flip cards with full interaction.
  */
 
 import { useState, useRef } from "react";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-import { Calendar, Building2, RotateCcw, CheckCircle2 } from "lucide-react";
+import { motion, useScroll, useTransform, useSpring, AnimatePresence } from "framer-motion";
+import { Calendar, Building2, RotateCcw, CheckCircle2, MapPin } from "lucide-react";
 
 const DE_KEYWORDS = [
   "Azure Data Factory", "Databricks", "PySpark", "Snowflake", "SQL", "Airflow", "Power BI", "Python", 
@@ -18,21 +18,22 @@ const DE_KEYWORDS = [
 const experiences = [
   {
     id: 1,
-    role: "Senior Data Engineer",
+    role: "Data Engineer",
     company: "HCA Healthcare",
     period: "Aug 2023 - Present",
-    description: "Engineered a real-time clinical telemetry streaming pipeline that synchronizes data from 100+ diagnostic devices into a centralized cloud lakehouse.",
+    domain: "Healthcare",
+    description: "Developed a real-time clinical telemetry streaming pipeline that synchronizes data from 100+ diagnostic devices into a centralized cloud lakehouse.",
     skills: ["Azure Data Factory", "Databricks", "PySpark", "Snowflake", "SQL", "Airflow", "Power BI", "Python", "dbt", "Azure Synapse"],
     type: "current",
     responsibilities: [
-      "Architected a PySpark-based streaming layer, reducing time-to-insight from 15 minutes to sub-30 seconds.",
-      "Optimized Spark clusters and Snowflake auto-scaling, achieving 35% reduction in cloud expenditure.",
-      "Built automated ETL workflows in Airflow, achieving 100% HIPAA compliance reporting accuracy.",
-      "Implemented Row-Level Security and dynamic masking, protecting 50M+ annual clinical records.",
-      "Resolved partitioning bottlenecks, improving dashboard load times by 40%.",
-      "Unified clinical data silos, standardizing 200+ KPIs across hospital units.",
-      "Maintained 99.99% uptime during migration of 500TB legacy data.",
-      "Integrated real-time telemetry into forecasting models for staffing optimization."
+      "Developed a PySpark-based streaming layer, reducing time-to-insight from 15 minutes to sub-30 seconds for critical care units.",
+      "Optimized Spark clusters and Snowflake auto-scaling, achieving 35% reduction in cloud expenditure for the department.",
+      "Unified clinical data silos across the healthcare network, standardizing 200+ KPIs across diverse hospital units.",
+      "Managed automated ETL workflows in Airflow, achieving 100% HIPAA compliance reporting accuracy for audit requirements.",
+      "Implemented Row-Level Security and dynamic masking protocols, protecting 50M+ annual clinical patient records.",
+      "Resolved partitioning bottlenecks in the primary data lakehouse, improving dashboard load times by 40%.",
+      "Maintained 99.99% uptime during the migration of 500TB legacy data from on-premise systems to Snowflake.",
+      "Integrated real-time telemetry into forecasting models to assist in staffing optimization and resource allocation."
     ]
   },
   {
@@ -40,18 +41,19 @@ const experiences = [
     role: "Associate Data Analyst / Data Engineer",
     company: "Accenture",
     period: "June 2019 - July 2021",
+    domain: "Technology",
     description: "Developed a multi-source ELT framework to consolidate data from fragmented payment APIs into BigQuery, resolving $2M+ in monthly reconciliation discrepancies.",
     skills: ["Python", "dbt", "BigQuery", "Docker", "SQL", "Looker", "Apache Spark", "GitHub", "Power BI", "PostgreSQL"],
     type: "past",
     responsibilities: [
-      "Developed dbt-based transformation layer, ensuring 99.8% reconciliation accuracy.",
-      "Optimized BigQuery partitioned structures, achieving 60% reduction in query times.",
-      "Containerized workflows with Docker, reducing deployment errors by 25%.",
-      "Implemented automated validation via Great Expectations, catching 95% of schema drifts.",
-      "Architected star-schema models, increasing dashboard refresh rates by 3x.",
-      "Automated 15+ weekly data extraction tasks, saving 60 hours per month.",
-      "Streamlined ingestion from 10+ third-party APIs into centralized warehouse.",
-      "Translated engagement metrics into actionable data for 1M+ active users."
+      "Developed a dbt-based transformation layer, ensuring 99.8% reconciliation accuracy for financial reporting processes.",
+      "Optimized BigQuery partitioned structures and materialized views, achieving 60% reduction in query execution times.",
+      "Containerized data ingestion workflows with Docker, reducing deployment environment errors by 25%.",
+      "Implemented automated validation via Great Expectations, catching 95% of schema drifts before reaching production.",
+      "Structured star-schema models for business intelligence, increasing executive dashboard refresh rates by 3x.",
+      "Automated 15+ weekly data extraction tasks using Python scripts, saving 60 hours of manual labor per month.",
+      "Streamlined ingestion flows from 10+ third-party APIs into the centralized warehouse for real-time tracking.",
+      "Translated engagement metrics into actionable data for 1M+ active users to improve retention and product strategy."
     ]
   }
 ];
@@ -85,6 +87,7 @@ interface Experience {
   role: string;
   company: string;
   period: string;
+  domain: string;
   description: string;
   skills: string[];
   type: string;
@@ -99,36 +102,30 @@ const ExperienceCard = ({ exp, index }: { exp: Experience; index: number }) => {
       initial={{ opacity: 0, y: 60 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
-      transition={{ 
-        duration: 0.8, 
-        delay: index * 0.15,
-        ease: [0.16, 1, 0.3, 1] 
-      }}
-      className="relative w-full"
-      style={{ perspective: "1500px" }}
+      transition={{ duration: 0.8, delay: index * 0.15, ease: [0.16, 1, 0.3, 1] }}
+      className="relative w-full cursor-pointer group"
+      style={{ perspective: "2000px" }}
+      onClick={() => setIsFlipped(!isFlipped)}
     >
       <motion.div
         animate={{ rotateY: isFlipped ? 180 : 0 }}
-        transition={{ duration: 0.7, type: "spring", stiffness: 80, damping: 20 }}
+        transition={{ duration: 0.7, type: "spring", stiffness: 100, damping: 20 }}
         style={{ transformStyle: "preserve-3d" }}
-        className="relative w-full"
+        className="relative w-full min-h-[480px]"
       >
         {/* FRONT SIDE */}
         <div
-          className="w-full glass rounded-3xl p-8 md:p-10"
-          style={{ backfaceVisibility: "hidden" }}
+          className="absolute inset-0 w-full h-full glass rounded-[2.5rem] p-8 md:p-10 shadow-xl"
+          style={{ backfaceVisibility: "hidden", pointerEvents: isFlipped ? "none" : "auto" }}
         >
-          {/* Header */}
           <div className="flex justify-between items-start mb-6">
             <div className="flex items-center gap-2 text-muted-foreground font-body text-sm">
               <Calendar className="w-4 h-4 text-primary" />
               {exp.period}
             </div>
-            {exp.type === 'current' && (
-              <span className="text-xs font-medium text-primary bg-primary/10 px-3 py-1 rounded-full">
-                Current
-              </span>
-            )}
+            <span className="text-xs font-medium text-primary bg-primary/10 px-3 py-1 rounded-full uppercase tracking-tighter">
+              {exp.domain}
+            </span>
           </div>
           
           <h3 className="font-heading text-2xl md:text-3xl font-semibold text-foreground mb-2">
@@ -143,45 +140,41 @@ const ExperienceCard = ({ exp, index }: { exp: Experience; index: number }) => {
             {exp.description}
           </p>
 
-          {/* Skills */}
           <div className="flex flex-wrap gap-2 mb-8">
             {exp.skills.map((skill: string) => (
-              <motion.span 
-                key={skill}
-                whileHover={{ scale: 1.05, y: -2 }}
-                className="px-3 py-1.5 bg-background/40 text-foreground/70 text-xs rounded-lg font-body cursor-default transition-colors hover:bg-primary/10 hover:text-primary"
-              >
+              <span key={skill} className="px-3 py-1.5 bg-background/40 text-foreground/70 text-xs rounded-lg font-body border border-white/5">
                 {skill}
-              </motion.span>
+              </span>
             ))}
           </div>
 
-          <button 
-            onClick={() => setIsFlipped(true)}
-            className="w-full pt-6 border-t border-border/50 flex items-center justify-between text-muted-foreground font-body text-sm hover:text-primary transition-colors group"
-          >
-            <span>View Impact & Results</span>
+          <div className="mt-auto pt-6 border-t border-border/50 flex items-center justify-between text-muted-foreground font-body text-sm group-hover:text-primary transition-colors">
+            <span>Click card for Impact & Results</span>
             <RotateCcw className="w-4 h-4 group-hover:rotate-180 transition-transform duration-500" />
-          </button>
+          </div>
         </div>
 
         {/* BACK SIDE */}
         <div
-          className="absolute inset-0 w-full h-full glass rounded-3xl p-8 md:p-10 border border-primary/20"
-          style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
+          className="absolute inset-0 w-full h-full glass rounded-[2.5rem] p-8 md:p-10 border border-primary/20 bg-background/80"
+          style={{ 
+            backfaceVisibility: "hidden", 
+            transform: "rotateY(180deg)", 
+            pointerEvents: isFlipped ? "auto" : "none" 
+          }}
         >
           <div className="flex justify-between items-center border-b border-border/50 pb-4 mb-6">
             <div>
-              <h3 className="font-heading text-lg font-semibold text-primary">Strategic Impact</h3>
-              <p className="font-body text-xs text-muted-foreground mt-1">Core Contributions</p>
+              <h3 className="font-heading text-lg font-semibold text-primary">Strategic Contributions</h3>
+              <p className="font-body text-xs text-muted-foreground mt-1">Metric-Driven Results</p>
             </div>
             <CheckCircle2 className="w-5 h-5 text-primary" />
           </div>
 
-          <div className="overflow-y-auto max-h-[320px] custom-scrollbar pr-2">
+          <div className="overflow-y-auto max-h-[280px] custom-scrollbar pr-4">
             <ul className="space-y-4">
               {exp.responsibilities.map((point: string, i: number) => (
-                <li key={i} className="font-body text-sm text-muted-foreground flex gap-3 leading-relaxed">
+                <li key={i} className="font-body text-xs md:text-sm text-muted-foreground flex gap-3 leading-relaxed">
                   <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary shrink-0" />
                   <span><HighlightTools text={point} /></span>
                 </li>
@@ -189,12 +182,9 @@ const ExperienceCard = ({ exp, index }: { exp: Experience; index: number }) => {
             </ul>
           </div>
 
-          <button 
-            onClick={() => setIsFlipped(false)}
-            className="mt-6 pt-4 w-full border-t border-border/50 flex items-center justify-center gap-2 text-muted-foreground hover:text-primary transition-colors font-body text-sm"
-          >
-            Return to Overview
-          </button>
+          <div className="mt-6 pt-4 w-full border-t border-border/50 text-center text-muted-foreground hover:text-primary transition-colors font-body text-sm">
+            Click to return to overview
+          </div>
         </div>
       </motion.div>
     </motion.div>
@@ -224,30 +214,24 @@ const ExperienceSection = () => {
       style={{ background: "var(--gradient-section)" }}
     >
       <div className="container mx-auto">
-        {/* Section header */}
         <motion.div
           style={{ y: headerY, opacity: headerOpacity }}
           className="text-center mb-20"
         >
-          <motion.span
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="inline-block font-body text-sm text-primary uppercase tracking-widest mb-4"
-          >
+          <span className="inline-block font-body text-sm text-primary uppercase tracking-widest mb-4">
             Career Path
-          </motion.span>
+          </span>
           <h2 className="font-heading text-4xl md:text-6xl font-semibold text-foreground mb-6">
-            Experience
+            Professional Experience
           </h2>
           <p className="font-body text-lg text-muted-foreground max-w-xl mx-auto">
-            4.5+ years building data infrastructure at scale
+            4.5+ years building and optimizing data infrastructure within complex domains.
           </p>
         </motion.div>
 
         <div className="relative max-w-4xl mx-auto">
-          {/* Timeline */}
-          <div className="absolute left-0 md:left-8 top-0 bottom-0 w-[2px] bg-border/50">
+          {/* Timeline Line */}
+          <div className="absolute left-0 md:left-8 top-0 bottom-0 w-[2px] bg-border/50 hidden md:block">
             <motion.div 
               style={{ height: pathHeight }} 
               className="absolute top-0 w-full bg-primary origin-top" 
@@ -258,8 +242,7 @@ const ExperienceSection = () => {
             />
           </div>
 
-          {/* Cards */}
-          <div className="space-y-8 pl-8 md:pl-20">
+          <div className="space-y-12 md:pl-24 pl-0">
             {experiences.map((exp, index) => (
               <ExperienceCard key={exp.id} exp={exp} index={index} />
             ))}
