@@ -1,9 +1,3 @@
-/**
- * SKILLS SECTION - Apple-Inspired Horizontal Scroll Cards
- * ========================================================
- * Smooth scroll-triggered animations, minimal design.
- */
-
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { 
@@ -18,7 +12,9 @@ import {
   LineChart,
   Table2,
   Boxes,
-  Zap
+  Zap,
+  Terminal, // Added for new tile
+  Server // Added for new tile
 } from "lucide-react";
 
 const skillCategories = [
@@ -58,11 +54,24 @@ const skillCategories = [
     ],
     gradient: "from-emerald-500/20 to-teal-500/20",
   },
+  // --- NEW FOURTH TILE ---
+  {
+    title: "Databases & Tools",
+    description: "Storage and operational excellence",
+    icon: Database,
+    skills: [
+      { name: "PostgreSQL", icon: Server },
+      { name: "Docker", icon: Boxes },
+      { name: "Kafka", icon: Zap },
+      { name: "Terminal", icon: Terminal },
+    ],
+    gradient: "from-orange-500/20 to-amber-500/20",
+  },
 ];
 
 const additionalSkills = [
   "ETL Pipelines", "Data Modeling", "Machine Learning", 
-  "APIs", "Docker", "Kafka", "Redis", "PostgreSQL"
+  "APIs", "Redis"
 ];
 
 const SkillsSection = () => {
@@ -105,8 +114,8 @@ const SkillsSection = () => {
           </p>
         </motion.div>
 
-        {/* Skills cards */}
-        <div className="grid md:grid-cols-3 gap-6 mb-16">
+        {/* --- CHANGED: grid-cols-4 for large screens --- */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
           {skillCategories.map((category, index) => (
             <motion.div
               key={category.title}
