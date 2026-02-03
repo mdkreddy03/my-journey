@@ -183,7 +183,7 @@ const ExperienceSection = () => {
             Professional <span className="italic">Experience</span>
           </h2>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto italic">
-            4.5+ years of data engineering expertise focused on infrastructure ROI and clinical accuracy.
+            Data Engineer ⫸ 4.5+ Yrs Experience | Optimizing Data Infra for Accuracy & Cost-Efficiency | Spark, Airflow, AWS
           </p>
         </div>
 
