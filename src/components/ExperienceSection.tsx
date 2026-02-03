@@ -1,16 +1,12 @@
 /**
  * ADVANCED EXPERIENCE SECTION - Apple-Inspired 3D Portfolio
  * =====================================================
- * Features: 
- * 1. ATS-Friendly Metric-Driven Content (8 points per role)
- * 2. Mouse-Tracking Radial Gradient Spotlight
- * 3. Reactive Background Ambient Auras
- * 4. Glowing Keyword Highlighting for DE Tools
+ * Fix: Corrected Mirror Imaging on Back Side Flip.
  */
 
 import { useState, useRef } from "react";
 import { motion, useScroll, useTransform, useSpring, useMotionValue } from "framer-motion";
-import { Calendar, Building2, RotateCcw, CheckCircle2, Zap, ArrowRight } from "lucide-react";
+import { Calendar, Building2, RotateCcw, CheckCircle2, Zap } from "lucide-react";
 
 const DE_KEYWORDS = [
   "Azure Data Factory", "Databricks", "PySpark", "Snowflake", "SQL", "Airflow", "Power BI", "Python", 
@@ -60,7 +56,6 @@ const experiences = [
   }
 ];
 
-// Moving Background Auras
 const BackgroundAura = () => (
   <div className="absolute inset-0 overflow-hidden pointer-events-none">
     <motion.div 
@@ -89,7 +84,7 @@ const HighlightTools = ({ text, isFlipped }: { text: string; isFlipped: boolean 
             newParts.push(
               <motion.span 
                 key={i}
-                animate={isFlipped ? { color: "#2997ff", textShadow: "0 0 8px rgba(41, 151, 255, 0.5)" } : {}}
+                animate={isFlipped ? { color: "#2997ff", textShadow: "0 0 12px rgba(41, 151, 255, 0.8)" } : {}}
                 className="font-bold transition-colors duration-500"
               >
                 {s}
@@ -130,11 +125,20 @@ const ExperienceCard = ({ exp }: { exp: any }) => {
         style={{ transformStyle: "preserve-3d" }}
         className="relative w-full"
       >
-        {/* Mouse Spotlight */}
-        <motion.div
-          className="absolute -inset-px rounded-[2.5rem] opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 pointer-events-none"
-          style={{ background: useTransform([mouseX, mouseY], ([x, y]) => `radial-gradient(600px circle at ${x}px ${y}px, rgba(41, 151, 255, 0.1), transparent 80%)`) }}
-        />
+        {/* Mouse Spotlight Container - Corrected for Flip */}
+        <motion.div 
+          className="absolute inset-0 z-10 pointer-events-none"
+          style={{ transform: isFlipped ? "rotateY(180deg)" : "none" }}
+        >
+          <motion.div
+            className="absolute -inset-px rounded-[2.5rem] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+            style={{ 
+              background: useTransform([mouseX, mouseY], ([x, y]) => 
+                `radial-gradient(600px circle at ${x}px ${y}px, rgba(41, 151, 255, 0.15), transparent 80%)`
+              ) 
+            }}
+          />
+        </motion.div>
 
         {/* FRONT SIDE */}
         <div className="absolute inset-0 w-full h-full glass rounded-[2.5rem] p-8 md:p-10 flex flex-col shadow-2xl border border-white/5" style={{ backfaceVisibility: "hidden", zIndex: isFlipped ? 0 : 1 }}>
@@ -169,7 +173,9 @@ const ExperienceCard = ({ exp }: { exp: any }) => {
               {exp.responsibilities.map((p: string, i: number) => (
                 <motion.li key={i} initial={{ opacity: 0, x: -20 }} animate={isFlipped ? { opacity: 1, x: 0 } : {}} transition={{ delay: 0.3 + (i * 0.08) }} className="text-sm text-muted-foreground flex gap-4 leading-relaxed group/item">
                   <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-primary shrink-0 shadow-[0_0_8px_rgba(41, 151, 255, 0.8)]" />
-                  <span className="group-hover/item:text-white transition-colors"><HighlightTools text={p} isFlipped={isFlipped} /></span>
+                  <span className="group-hover/item:text-white transition-colors">
+                    <HighlightTools text={p} isFlipped={isFlipped} />
+                  </span>
                 </motion.li>
               ))}
             </ul>
