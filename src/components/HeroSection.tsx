@@ -111,7 +111,7 @@ const HeroSection = () => {
             style={{ y: subtitleY }}
             className="font-heading text-6xl md:text-8xl lg:text-9xl font-semibold text-foreground mb-8 tracking-tight"
           >
-            Dharani Majji
+            Dharani Kishore Reddy Majji
           </motion.h1>
 
           {/* Tagline */}
