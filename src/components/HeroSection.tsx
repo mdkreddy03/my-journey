@@ -95,7 +95,7 @@ const HeroSection = () => {
           variants={itemVariants}
           className="font-heading text-5xl md:text-7xl lg:text-8xl font-bold text-foreground mb-6 leading-tight"
         >
-          Dharani Majji
+          Dharani Kishore Reddy Majji
         </motion.h1>
 
         {/* Tagline with gradient */}
