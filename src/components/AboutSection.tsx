@@ -1,7 +1,7 @@
 /**
  * ABOUT SECTION - Apple-Inspired Scroll Reveal
  * =============================================
- * Smooth text reveals, parallax elements, minimal design.
+ * Smooth text reveals, parallax elements, minimal design.jsg
  */
 
 import { useRef } from "react";
